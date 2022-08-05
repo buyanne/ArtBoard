@@ -4,24 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画布</title>
+    <title>主画板</title>
+    <link rel="stylesheet" href="CSS/style.css">
 
 </head>
 
 <body>
-    <!-- 侧边工具栏 -->
-    <aside>
+<!--    整一个主画板界面-->
+    <div class="MainArtBoard">
+<!--        工具栏-->
+        <div class="tools">
+<!--            无序列表写画笔等工具
+                感觉可以只写出来几个基本的，然后通过展开来选择具体的-->
+            <ul>
+                <li id="Pencil"></li>
+                <li id="Line"></li>
+                <li id="DottedLine"></li>
+                <li id="Triangle"></li>
+                <li id="Rectangle"></li>
+                <li id="Cycle"></li>
+<!--                椭圆形 ，怕看不懂（doge）-->
+                <li id="Oval"></li>
+                <li id="Eraser"></li>
+<!--                区域填充-->
+                <li id="AreaFilling"></li>
+                <li id="Revoke"></li>
+            </ul>
+        </div>
+        <div id="CanvasDiv">
+            <canvas id="Canvas"></canvas>
+        </div>
 
-    </aside>
-    <!-- 画布主体区域 -->
-    <main>
-        <canvas id="myCanvas">
-            
-
-        </canvas>
-
-
-    </main>
+    </div>
 
 </body>
 
