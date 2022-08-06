@@ -1,7 +1,26 @@
-.tools{
+*{
     margin: 0;
     padding: 0;
 }
-.tools li{
-    list-style: none;
+
+#Tools li{
+    display: block;
+}
+
+.CanvasDiv{
+    display: inline-block;
+    position: relative;
+    width: 960px;
+    height: 580px;
+    background:url("../Resource/Image/background.png");
+}
+
+
+
+#Canvas{
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    cursor: url("../Resource/Image/cursor.gif") 1 1,crosshair;
 }
