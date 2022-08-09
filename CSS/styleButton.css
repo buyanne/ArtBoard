@@ -1,0 +1,22 @@
+.ToolsDiv input{
+    position: absolute;
+    height: 50px;
+    border-radius: 20px;
+    background-color: rgb(123, 123, 161);
+    top: 25px;
+}
+.ToolsDiv input:hover{
+    background-color: rgb(56, 56, 91);
+}
+
+#pencil{
+    left: 50px;
+}
+
+#rubber{
+    left: 150px;
+}
+
+#circle{
+    left: 250px
+}
