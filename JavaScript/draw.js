@@ -7,6 +7,9 @@ var position = [0];
 var mousePressed = false;
 var mouseIsInCanvas = true;
 var canvas = document.getElementById("Canvas");
+//添加偏移量
+var artboardDiv=document.getElementsByClassName("MainArtBoardDiv")[0];
+
 
 //画笔
 var ctx = canvas.getContext("2d");
@@ -32,8 +35,8 @@ document.onmouseup = (e) => {
 //画线的函数
 function draw(startX, startY, endX, endY) {
     ctx.beginPath();
-    ctx.moveTo(startX-350, startY-150);
-    ctx.lineTo(endX-350, endY-150);
+    ctx.moveTo(startX-artboardDiv.offsetLeft, startY-artboardDiv.offsetTop);
+    ctx.lineTo(endX-artboardDiv.offsetLeft, endY-artboardDiv.offsetTop);
     ctx.closePath();
     ctx.stroke();
 }

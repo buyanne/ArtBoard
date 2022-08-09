@@ -1,22 +1,58 @@
-.ToolsDiv input{
+.ToolsDiv input {
     position: absolute;
     height: 50px;
     border-radius: 20px;
-    background-color: rgb(123, 123, 161);
+    background-color: rgba(155, 68, 190, 0.43);
     top: 25px;
 }
-.ToolsDiv input:hover{
-    background-color: rgb(56, 56, 91);
+
+.ToolsDiv input:hover {
+    background-color: rgba(190, 45, 109, 0.21);
+    transform: scale(1.5);
+/ / 放大1 .5 倍 transition: all 0.6 s ease;
+
 }
 
-#pencil{
+#color {
     left: 50px;
 }
 
-#rubber{
+#size {
     left: 150px;
 }
 
-#circle{
+#pencil {
     left: 250px
+}
+
+#line {
+    left: 350px;
+}
+
+#circle {
+    left: 450px;
+}
+
+#square {
+    left: 550px;
+}
+
+#areaFilling {
+    left: 650px;
+}
+
+#cancel {
+    left: 750px;
+}
+
+#rubber {
+    left: 850px;
+}
+
+#rubbish {
+    left: 950px
+}
+
+#save {
+    left: 1050px;
 }

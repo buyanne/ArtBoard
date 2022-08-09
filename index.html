@@ -1,5 +1,9 @@
 <html lang="zh-cn">
-
+    <!--直接写在这里好了
+        接下来就是给每一个按钮加上不同的事件相应
+        点击后图案的状态
+        可以添加的：
+                鼠标滚动放大缩小画笔的粗细-->
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,34 +15,20 @@
     </head>
 
     <body>
-        <!--    整一个主画板界面-->
         <div class="MainArtBoardDiv">
             <!--        工具栏-->
             <div class="ToolsDiv">
-                <!--            无序列表写画笔等工具
-                                感觉可以只写出来几个基本的，然后通过展开来选择具体的-->
-                <input type="image" src="./Resource/Image/pencil.png" id="pencil" />
-                <input type="image" src="./Resource/Image/rubber.png" id="rubber" />
-                <input type="image" src="./Resource/Image/circle.png" id="circle" />
-                <ul id="Tools">
-
-
-                    <!--
-                        <li id="Pencil"></li>
-                    <li id="Line"></li>
-                    <li id="DottedLine"></li>
-                    <li id="Triangle"></li>
-                    <li id="Rectangle"></li>
-                    <li id="Cycle"></li>
-                                    椭圆形 ，怕看不懂（doge）
-                    <li id="Oval"></li>
-                    <li id="Eraser"></li>
-                                   区域填充
-                    <li id="AreaFilling"></li>
-                    <li id="Revoke"></li>
-                    -->
-                    
-                </ul>
+                <input type="image" src="Resource/Image/color.png" id="color" alt="颜色"/>
+                <input type="image" src="Resource/Image/size.png" id="size" alt="粗细"/>
+                <input type="image" src="Resource/Image/pencil.png" id="pencil" alt="画笔"/>
+                <input type="image" src="Resource/Image/line.png" id="line" alt="直线段"/>
+                <input type="image" src="Resource/Image/circle.png" id="circle" alt="圆形"/>
+                <input type="image" src="Resource/Image/square.png" id="square" alt="矩形"/>
+                <input type="image" src="Resource/Image/fill.png" id="areaFilling" alt="区域填充"/>
+                <input type="image" src="Resource/Image/cancle.png" id="cancel" alt="撤销"/>
+                <input type="image" src="Resource/Image/rubber.png" id="rubber" alt="橡皮擦"/>
+                <input type="image" src="Resource/Image/rubbish.png" id="rubbish" alt="清空画板"/>
+                <input type="image" src="Resource/Image/save.png" id="save" alt="保存图片"/>
             </div>
             <div class="CanvasDiv">
                 <canvas id="Canvas" height="580" width="960"></canvas>
@@ -48,6 +38,6 @@
 
     </body>
     <script src="JavaScript/jquery.min.js"></script>
-    <script src="./JavaScript/draw.js"></script>
+    <script src="JavaScript/draw.js"></script>
 
 </html>
