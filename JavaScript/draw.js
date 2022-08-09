@@ -32,8 +32,8 @@ document.onmouseup = (e) => {
 //画线的函数
 function draw(startX, startY, endX, endY) {
     ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
+    ctx.moveTo(startX-350, startY-150);
+    ctx.lineTo(endX-350, endY-150);
     ctx.closePath();
     ctx.stroke();
 }

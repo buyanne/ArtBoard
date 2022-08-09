@@ -3,6 +3,23 @@
     padding: 0;
 }
 
+.MainArtBoardDiv{
+    position:absolute;
+    left:350px;
+    top:150px;
+}
+
+.ToolsDiv {
+    position: absolute;
+    background-color: rgb(84, 95, 146);
+    height: 100px;
+    width: 1300px;
+    top: -125px;
+    left:-160px;
+    border-radius: 50px;
+
+}
+
 #Tools li{
     display: block;
 }
