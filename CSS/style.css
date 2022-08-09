@@ -1,26 +1,38 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-#Tools li{
-    display: block;
+.MainArtBoardDiv {
+    position: absolute;
+    left: 400px;
+    top: 150px;
 }
 
-.CanvasDiv{
+.ToolsDiv {
+    position: absolute;
+    background-color: rgba(53, 190, 130, 0.21);
+    height: 100px;
+    width: 1150px;
+    top: -125px;
+    left: -90px;
+    border-radius: 50px;
+
+}
+
+.CanvasDiv {
     display: inline-block;
     position: relative;
     width: 960px;
     height: 580px;
-    background:url("../Resource/Image/background.png");
+    background: url("../Resource/Image/background.png");
 }
 
 
-
-#Canvas{
+#Canvas {
     position: absolute;
     z-index: 0;
     left: 0;
     top: 0;
-    cursor: url("../Resource/Image/cursor.gif") 1 1,crosshair;
+    cursor: url("../Resource/Image/cursor.gif") 1 1, crosshair;
 }
