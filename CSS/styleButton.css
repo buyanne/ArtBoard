@@ -2,14 +2,16 @@
     position: absolute;
     height: 50px;
     border-radius: 20px;
-    background-color: rgba(155, 68, 190, 0.43);
+    background-color: #9b44be6e;
     top: 25px;
+    /*平滑动画*/
+    transition: all .3s;
 }
 
 .ToolsDiv input:hover {
     background-color: rgba(190, 45, 109, 0.21);
     transform: scale(1.5);
-/ / 放大1 .5 倍 transition: all 0.6 s ease;
+/*放大1 .5 倍*/ transition: all 0.6 s ease;
 
 }
 
