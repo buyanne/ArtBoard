@@ -3,7 +3,6 @@
 * */
 var color = document.getElementById("color");
 
-
 windowAddMouseWheel();
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
@@ -35,6 +34,3 @@ function windowAddMouseWheel() {
     window.onmousewheel = document.onmousewheel = scrollFunc;
 }
 
-/*
-*   ctrl+z实现撤销功能
-* */
