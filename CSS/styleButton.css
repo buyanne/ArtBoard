@@ -5,13 +5,14 @@
     background-color: #9b44be6e;
     top: 25px;
     /*平滑动画*/
-    transition: all .3s;
+    transition: all 0.5s;
 }
 
 .ToolsDiv input:hover {
     background-color: rgba(190, 45, 109, 0.21);
     transform: scale(1.5);
-/*放大1 .5 倍*/ transition: all 0.6 s ease;
+/*放大1 .5 倍*/
+    transition: all 0.2s ease;
 
 }
 
