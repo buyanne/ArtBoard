@@ -5,23 +5,24 @@
     background-color: #9b44be6e;
     top: 25px;
     /*平滑动画*/
-    transition: all 0.5s;
+    transition: all 0.2s;
 }
 
 .ToolsDiv .after{
     position: absolute;
     height: 50px;
     border-radius: 20px;
-    background-color: #26102e6e;
+    background-color: rgba(236,0,58,0.38);
+    transform: scale(1.65);
     top: 25px;
     /*平滑动画*/
-    transition: all 0.5s;
+    transition: all 0.2s ease ;
 }
 
 .ToolsDiv .before:hover {
     background-color: rgba(190, 45, 109, 0.21);
-    transform: scale(1.5);
-/*放大1 .5 倍*/
+    transform: scale(1.4);
+    /*放大1 .5 倍*/
     transition: all 0.2s ease;
 
 }
@@ -55,11 +56,11 @@
 }
 
 #cancel {
-    left: 750px;
+    left: 850px;
 }
 
 #rubber {
-    left: 850px;
+    left: 750px;
 }
 
 #rubbish {
