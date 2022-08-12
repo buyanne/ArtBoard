@@ -4,6 +4,11 @@ var canvasCopy;
 var artboardDiv = document.getElementsByClassName("MainArtBoardDiv")[0];
 //画笔
 var ctx = canvas.getContext("2d");
+// 橡皮擦宽度
+var ToolsDiv = document.querySelector(".ToolsDiv");
+ToolsDiv.rubberState = 10;
+var rubberWidth = ToolsDiv.rubberState;
+
 //判断鼠标是否按下
 var mousePressed = false;
 //判断是否为canvas中
@@ -26,6 +31,10 @@ document.addEventListener("mousedown", mousedown, false);
 canvas.addEventListener("mousemove", mousemove, false);
 canvas.addEventListener("mouseenter", mouseenter, false);
 canvas.addEventListener("mouseleave", mouseleave, false);
+
+
+console.log(mainArtBoardDiv.boardState)
+console.log(ToolsDiv.rubberState)
 
 
 //获取当前的鼠标位置（相对于canvas的）
@@ -98,6 +107,10 @@ function mousemove(e) {
         ctx.stroke();
         ctx.closePath();
 
+    }else if(mainArtBoardDiv.boardState === 7){
+        const {x, y}=getPos(e);
+        let halfWid = rubberWidth/2;
+        ctx.clearRect(x-halfWid,y-halfWid,rubberWidth,rubberWidth);
     }
 
 }
@@ -144,3 +157,12 @@ function mouseleave(e) {
     mouseIsInCanvas = false;
     points = [];
 }
+
+
+//橡皮擦的实现
+
+if(mainArtBoardDiv.boardState === 7){
+    console.log("1")
+    
+}
+
