@@ -5,10 +5,8 @@ var artboardDiv = document.getElementsByClassName("MainArtBoardDiv")[0];
 //画笔
 var ctx = canvas.getContext("2d");
 // 橡皮擦宽度
-var ToolsDiv = document.querySelector(".ToolsDiv");
-ToolsDiv.rubberState = 10;
-var rubberWidth = ToolsDiv.rubberState;
-
+var toolsDiv = document.querySelector(".ToolsDiv");
+toolsDiv.rubberWidth = rubberWidthDefault;
 //判断鼠标是否按下
 var mousePressed = false;
 //判断是否为canvas中
@@ -31,10 +29,6 @@ document.addEventListener("mousedown", mousedown, false);
 canvas.addEventListener("mousemove", mousemove, false);
 canvas.addEventListener("mouseenter", mouseenter, false);
 canvas.addEventListener("mouseleave", mouseleave, false);
-
-
-console.log(mainArtBoardDiv.boardState)
-console.log(ToolsDiv.rubberState)
 
 
 //获取当前的鼠标位置（相对于canvas的）
@@ -69,7 +63,19 @@ function mousedown(e) {
     const {x, y} = getPos(e);
     points.push({x, y});
     startPoint = {x, y};
-    url = canvas.toDataURL();
+    switch (mainArtBoardDiv.boardState) {
+        case 2: {
+
+            break;
+        }
+        case 3: {
+            url = canvas.toDataURL();
+            break;
+        }
+        case 7: {
+            clearArc(startPoint, toolsDiv.rubberWidth, ctx);
+        }
+    }
 }
 
 //鼠标在canvas移动时
@@ -77,42 +83,47 @@ function mousemove(e) {
     if (mousePressed === false || mouseIsInCanvas === false) {
         return;
     }
-    //如果为铅笔的时候
-    if (mainArtBoardDiv.boardState === 2) {
-        const {x, y} = getPos(e);
-        points.push({x, y});
 
-        if (points.length > 3) {
-            const lastTwoPoints = points.slice(-2);
+    switch (mainArtBoardDiv.boardState) {
+        //为画笔
+        case 2: {
+            const {x, y} = getPos(e);
+            points.push({x, y});
 
-            const controlPoint = lastTwoPoints[0];
+            if (points.length > 3) {
+                const lastTwoPoints = points.slice(-2);
 
-            const endPoint = {
-                x: (lastTwoPoints[0].x + lastTwoPoints[1].x) / 2,
-                y: (lastTwoPoints[0].y + lastTwoPoints[1].y) / 2
+                const controlPoint = lastTwoPoints[0];
+
+                const endPoint = {
+                    x: (lastTwoPoints[0].x + lastTwoPoints[1].x) / 2,
+                    y: (lastTwoPoints[0].y + lastTwoPoints[1].y) / 2
+                }
+
+                drawLine(startPoint, controlPoint, endPoint);
+
+                startPoint = endPoint;
             }
-
-            drawLine(startPoint, controlPoint, endPoint);
-
-            startPoint = endPoint;
+            break;
         }
-    //画直线
-    } else if (mainArtBoardDiv.boardState === 3) {
-        const endPoint = getPos(e);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        loadImage();
-        ctx.beginPath();
-        ctx.moveTo(startPoint.x, startPoint.y);
-        ctx.lineTo(endPoint.x, endPoint.y);
-        ctx.stroke();
-        ctx.closePath();
-
-    }else if(mainArtBoardDiv.boardState === 7){
-        const {x, y}=getPos(e);
-        let halfWid = rubberWidth/2;
-        ctx.clearRect(x-halfWid,y-halfWid,rubberWidth,rubberWidth);
+        //直线段
+        case 3: {
+            const endPoint = getPos(e);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            loadImage();
+            ctx.beginPath();
+            ctx.moveTo(startPoint.x, startPoint.y);
+            ctx.lineTo(endPoint.x, endPoint.y);
+            ctx.stroke();
+            ctx.closePath();
+            break;
+        }
+        //橡皮擦
+        case 7: {
+            const {x, y} = getPos(e);
+            clearArc({x, y});
+        }
     }
-
 }
 
 
@@ -121,26 +132,29 @@ function mouseup(e) {
     if (mousePressed === false) {
         return;
     }
+    switch (mainArtBoardDiv.boardState) {
+        case 2: {
+            const {x, y} = getPos(e);
 
-    if (mainArtBoardDiv.boardState === 2) {
-        const {x, y} = getPos(e);
+            points.push({x, y});
 
-        points.push({x, y});
+            if (points.length > 3) {
+                const lastTwoPoints = points.slice(-2);
 
-        if (points.length > 3) {
-            const lastTwoPoints = points.slice(-2);
+                const controlPoint = lastTwoPoints[0];
 
-            const controlPoint = lastTwoPoints[0];
+                const endPoint = lastTwoPoints[1];
 
-            const endPoint = lastTwoPoints[1];
-
-            drawLine(startPoint, controlPoint, endPoint);
+                drawLine(startPoint, controlPoint, endPoint);
+            }
+            break;
         }
-
-    } else if (mousePressed.boardState === 3) {
-        const endPoint = getPos(e);
-
+        case 3: {
+            //todo
+        }
     }
+
+
     startPoint = null;
     mousePressed = false;
     points = [];
@@ -156,13 +170,5 @@ function mouseenter(e) {
 function mouseleave(e) {
     mouseIsInCanvas = false;
     points = [];
-}
-
-
-//橡皮擦的实现
-
-if(mainArtBoardDiv.boardState === 7){
-    console.log("1")
-    
 }
 
