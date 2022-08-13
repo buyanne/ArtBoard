@@ -36,3 +36,33 @@
     top: 0;
     cursor: url("../Resource/Image/cursor.gif") 1 1, crosshair;
 }
+
+#Canvas_chosen{
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    cursor: none;
+}
+
+#eraser{
+    display:none;
+}
+
+#eraser_chosen{
+    position: fixed;
+    height: 20px;
+	left: 0px;
+	top: 0px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+
+#colorChange{
+    
+    background-color: brown;
+    height: 200px;
+    width: 200px;
+    position:fixed;
+}
