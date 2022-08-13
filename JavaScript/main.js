@@ -22,6 +22,7 @@ let width = 960;
 //橡皮擦图片
 var eraser = document.querySelector("#eraser");
 
+var colorChange = document.querySelector("#colorChange");
 
 
 
