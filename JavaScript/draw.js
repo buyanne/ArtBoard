@@ -5,6 +5,8 @@ var artboardDiv = document.getElementsByClassName("MainArtBoardDiv")[0];
 //画笔
 var ctx = canvas.getContext("2d");
 
+
+
 // 橡皮擦宽度
 var toolsDiv = document.querySelector(".ToolsDiv");
 toolsDiv.rubberWidth = rubberWidthDefault;
