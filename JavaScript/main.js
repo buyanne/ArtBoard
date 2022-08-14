@@ -224,3 +224,24 @@ Canvas.addEventListener('mousemove',function(e){
     }
     
 })
+
+
+/**
+ *  撤销之前的绘画操作
+ */
+var ctxStack = [];
+
+Canvas.addEventListener("mouseup",function(){
+    //保存之前的绘画状态
+    const ctxData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
+    ctxStack.push(ctxData);
+    console.log(2);
+})
+
+buttons[8].addEventListener("click",function(){
+    //恢复到之前的绘画状态
+    const ctxData= ctxStack.pop();
+    ctx.putImageData(ctxData,0,0)
+    
+    console.log(1)
+})

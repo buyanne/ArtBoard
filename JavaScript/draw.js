@@ -157,6 +157,11 @@ function mouseup(e) {
         case 3: {
             //todo
         }
+
+        //保存之前的状态方便撤销
+
+        ctx.save();
+        console.log(2);
     }
 
 
