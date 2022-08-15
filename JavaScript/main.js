@@ -1,7 +1,7 @@
 //线条的最大值最小值
 var ctxLineWidthMax = 10, ctxLineWidthMin = 1;
 //线条的默认值
-var ctxLineWidthDefault = 4;
+var ctxLineWidthDefault = 2;
 //鼠标滚动时候的变化快慢
 var mouseScrollChange = 0.1;
 
@@ -23,6 +23,9 @@ let width = 960;
 var eraser = document.querySelector("#eraser");
 
 var colorChange = document.querySelector("#colorChange");
+
+//当前颜色
+var color="000000";
 
 //表图层
 var canvas = document.getElementById("Canvas");
@@ -69,6 +72,20 @@ function windowAddMouseWheel() {
                         }
                         break;
                     }
+                    case 4:{
+                        ctx.lineWidth += mouseScrollChange;
+                        if (ctx.lineWidth > ctxLineWidthMax) {
+                            ctx.lineWidth = ctxLineWidthMax;
+                        }
+                        break;
+                    }
+                    case 5:{
+                        ctx.lineWidth += mouseScrollChange;
+                        if (ctx.lineWidth > ctxLineWidthMax) {
+                            ctx.lineWidth = ctxLineWidthMax;
+                        }
+                        break;
+                    }
                     case 7: {
                         //橡皮图片
                         eraserHeight += rubberWidthChange;
@@ -94,6 +111,20 @@ function windowAddMouseWheel() {
                         break;
                     }
                     case 3: {
+                        ctx.lineWidth -= mouseScrollChange;
+                        if (ctx.lineWidth < ctxLineWidthMin) {
+                            ctx.lineWidth = ctxLineWidthMin;
+                        }
+                        break;
+                    }
+                    case 4:{
+                        ctx.lineWidth -= mouseScrollChange;
+                        if (ctx.lineWidth < ctxLineWidthMin) {
+                            ctx.lineWidth = ctxLineWidthMin;
+                        }
+                        break;
+                    }
+                    case 5:{
                         ctx.lineWidth -= mouseScrollChange;
                         if (ctx.lineWidth < ctxLineWidthMin) {
                             ctx.lineWidth = ctxLineWidthMin;
@@ -252,10 +283,14 @@ buttons[8].addEventListener("click", function () {
         ctx.clearRect(0, 0, width, height);
     }
     // console.log(ctxStack.length);
-})
+});
+
+//ctrl＋z撤回
+//暂时不能解决
 
 //加入栈中
 function pushIntoStack(){
     const x = realCtx.getImageData(0, 0, width, height);
     ctxStack.push(x);
 }
+
