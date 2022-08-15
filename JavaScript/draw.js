@@ -1,11 +1,3 @@
-var canvas = document.getElementById("Canvas");
-var canvasCopy;
-//添加偏移量
-var artboardDiv = document.getElementsByClassName("MainArtBoardDiv")[0];
-//画笔
-var ctx = canvas.getContext("2d");
-
-
 
 // 橡皮擦宽度
 var toolsDiv = document.querySelector(".ToolsDiv");
@@ -64,18 +56,26 @@ function loadImage() {
 function mousedown(e) {
     mousePressed = true;
     const {x, y} = getPos(e);
-    points.push({x, y});
     startPoint = {x, y};
+    points.push(startPoint);
+
+
+    //确保栈底层永远都是有一个空白的
+    if(ctxStack.length===0){
+        pushIntoStack();
+    }
+
     switch (mainArtBoardDiv.boardState) {
         case 2: {
 
             break;
         }
         case 3: {
-            url = canvas.toDataURL();
+
             break;
         }
         case 7: {
+            // pushIntoStack();
             clearArc(startPoint, toolsDiv.rubberWidth, ctx);
         }
     }
@@ -112,9 +112,8 @@ function mousemove(e) {
         //直线段
         case 3: {
             const endPoint = getPos(e);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            loadImage();
             ctx.beginPath();
+            ctx.clearRect(0, 0, width, height);
             ctx.moveTo(startPoint.x, startPoint.y);
             ctx.lineTo(endPoint.x, endPoint.y);
             ctx.stroke();
@@ -123,11 +122,9 @@ function mousemove(e) {
         }
         //橡皮擦
         case 7: {
-
-            const {x, y} = getPos(e);
-            clearArc({x, y});
-            
+            clearArc(getPos(e));
         }
+
     }
 }
 
@@ -137,31 +134,32 @@ function mouseup(e) {
     if (mousePressed === false) {
         return;
     }
-    switch (mainArtBoardDiv.boardState) {
-        case 2: {
-            const {x, y} = getPos(e);
 
-            points.push({x, y});
+    if (mouseIsInCanvas) {
+        switch (mainArtBoardDiv.boardState) {
+            case 2: {
+                const {x, y} = getPos(e);
 
-            if (points.length > 3) {
-                const lastTwoPoints = points.slice(-2);
+                points.push({x, y});
 
-                const controlPoint = lastTwoPoints[0];
+                if (points.length > 3) {
+                    const lastTwoPoints = points.slice(-2);
 
-                const endPoint = lastTwoPoints[1];
+                    const controlPoint = lastTwoPoints[0];
 
-                drawLine(startPoint, controlPoint, endPoint);
+                    const endPoint = lastTwoPoints[1];
+
+                    drawLine(startPoint, controlPoint, endPoint);
+                }
+                break;
             }
-            break;
+            case 3: {
+                //todo
+                break;
+            }
         }
-        case 3: {
-            //todo
-        }
-
-        //保存之前的状态方便撤销
-
-        ctx.save();
-        console.log(2);
+        saveImage();
+        pushIntoStack();
     }
 
 
@@ -169,6 +167,8 @@ function mouseup(e) {
     mousePressed = false;
     points = [];
 }
+
+
 
 //当鼠标进入canvas
 function mouseenter(e) {

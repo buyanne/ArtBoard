@@ -1,15 +1,15 @@
-/*
-*   线条的最大值最小值
-*   线条的默认值
-*   鼠标滚动时候的变化快慢
-* */
+//线条的最大值最小值
 var ctxLineWidthMax = 10, ctxLineWidthMin = 1;
+//线条的默认值
 var ctxLineWidthDefault = 4;
+//鼠标滚动时候的变化快慢
 var mouseScrollChange = 0.1;
 
-
+//橡皮擦最大值最小值
 var rubberWidthMin = 1, rubberWidthMax = 20;
+//橡皮擦默认值
 var rubberWidthDefault = 4;
+//鼠标滚动时橡皮擦变化量
 var rubberWidthChange = 0.5;
 //橡皮图片偏移量
 var eraserChange = 10;
@@ -23,6 +23,22 @@ let width = 960;
 var eraser = document.querySelector("#eraser");
 
 var colorChange = document.querySelector("#colorChange");
+
+//表图层
+var canvas = document.getElementById("Canvas");
+//添加偏移量
+var artboardDiv = document.getElementsByClassName("MainArtBoardDiv")[0];
+//画笔
+var ctx = canvas.getContext("2d");
+//真正的图层
+var realCanvas = document.getElementById("RealCanvas");
+//真正的画笔
+var realCtx = realCanvas.getContext("2d");
+
+//撤回保存的栈
+var ctxStack = [];
+var isFirst = true;
+//初始化栈底为一个空白图层
 
 
 
@@ -55,9 +71,9 @@ function windowAddMouseWheel() {
                     }
                     case 7: {
                         //橡皮图片
-                        eraserHeight +=rubberWidthChange;
-                        eraserChange += rubberWidthChange/2;
-                        eraser.style.height =eraserHeight+"px"
+                        eraserHeight += rubberWidthChange;
+                        eraserChange += rubberWidthChange / 2;
+                        eraser.style.height = eraserHeight + "px"
 
                         toolsDiv.rubberWidth += rubberWidthChange;
                         if (toolsDiv.rubberWidth >= rubberWidthMax) {
@@ -86,10 +102,9 @@ function windowAddMouseWheel() {
                     }
                     case 7: {
                         //橡皮图片
-                        eraserHeight -=rubberWidthChange;
-                        eraserChange -= rubberWidthChange/2;
-                        eraser.style.height =eraserHeight+"px"
-                        
+                        eraserHeight -= rubberWidthChange;
+                        eraserChange -= rubberWidthChange / 2;
+                        eraser.style.height = eraserHeight + "px"
 
 
                         toolsDiv.rubberWidth -= rubberWidthChange;
@@ -123,13 +138,6 @@ var buttons = document.querySelectorAll(".ToolsDiv input");
 var mainArtBoardDiv = document.querySelector(".MainArtBoardDiv");
 mainArtBoardDiv.boardState = 2;
 buttons[2].className = "after";
-//console.log(buttons)
-
-/*
-当使用橡皮擦的时候，指针变化为圆形
- */
-var Canvas = document.querySelector("#Canvas");
-
 
 
 //绑定事件
@@ -142,12 +150,12 @@ for (let i = 2; i <= 7; i++) {
         //console.log(MainArtBoardDiv.boardState);
 
         //当使用橡皮擦的时候，指针变化为圆形
-        if(mainArtBoardDiv.boardState === 7){
-            Canvas.id = "Canvas_chosen";
-        }else{
-            Canvas.id = "Canvas";
+        if (mainArtBoardDiv.boardState === 7) {
+            canvas.id = "Canvas_chosen";
+        } else {
+            canvas.id = "Canvas";
         }
-        
+
         //改变css样式
         buttons[i].className = "after";
         for (let j = 0; j <= 7; j++) {
@@ -170,7 +178,7 @@ function downLoadImage() {
         return;
     }
     //toDataURL返回链接
-    a.href = canvas.toDataURL();
+    a.href = realCanvas.toDataURL();
 
     a.download = name;
     a.click();
@@ -179,9 +187,7 @@ function downLoadImage() {
 
 //清空canvas
 function clearCanvas() {
-    $("#Canvas").getCon
-    var canvas = document.getElementById("Canvas");
-    var ctx = canvas.getContext("2d");
+    realCtx.clearRect(0, 0, width, height);
     ctx.clearRect(0, 0, width, height);
 }
 
@@ -190,6 +196,7 @@ function clearArc(p) {
     //删除精度
     let step = 0.1;
     func(toolsDiv.rubberWidth);
+
     //递归清空圆形区域
     function func(r) {
         let width = r - step;
@@ -197,7 +204,7 @@ function clearArc(p) {
         let x = p.x - width;
         let y = p.y - height;
         if (step <= r) {
-            ctx.clearRect(x, y, width * 2, height * 2);
+            realCtx.clearRect(x, y, width * 2, height * 2);
             step += 0.1;
             func(r);
         }
@@ -205,43 +212,50 @@ function clearArc(p) {
 }
 
 
-
-
 /*
 使橡皮擦图片跟随指针
  */
 
-Canvas.addEventListener('mousemove',function(e){
-    if(mainArtBoardDiv.boardState===7){
-    var pagex = e.pageX-eraserChange+'px';
-    var pagey = e.pageY-eraserChange+'px';
-    eraser.id="eraser_chosen";
-    //console.log(pagex,pagey);
-    eraser.style.left = pagex;
-    eraser.style.top = pagey;
-    }else if(mainArtBoardDiv.boardState!==7){
-        eraser.id="eraser";
+canvas.addEventListener('mousemove', function (e) {
+    if (mainArtBoardDiv.boardState === 7) {
+        var pagex = e.pageX - eraserChange + 'px';
+        var pagey = e.pageY - eraserChange + 'px';
+        eraser.id = "eraser_chosen";
+        //console.log(pagex,pagey);
+        eraser.style.left = pagex;
+        eraser.style.top = pagey;
+    } else if (mainArtBoardDiv.boardState !== 7) {
+        eraser.id = "eraser";
     }
-    
+
+});
+
+//保存当前的表图层的图案到里图层
+function saveImage() {
+    const image = new Image();
+    image.src = canvas.toDataURL();
+    image.onload = function () {
+        realCtx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+        ctx.clearRect(0, 0, width, height);
+    }
+
+}
+
+buttons[8].addEventListener("click", function () {
+    // if (isFirst) {
+    //     ctxStack.pop();
+    //     isFirst = false;
+    // }
+    if (ctxStack.length > 0) {
+        const imageData = ctxStack.pop();
+        realCtx.putImageData(imageData, 0, 0);
+        ctx.clearRect(0, 0, width, height);
+    }
+    // console.log(ctxStack.length);
 })
 
-
-/**
- *  撤销之前的绘画操作
- */
-var ctxStack = [];
-
-Canvas.addEventListener("mouseup",function(){
-    //保存之前的绘画状态
-    const ctxData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
-    ctxStack.push(ctxData);
-    console.log(2);
-})
-
-buttons[8].addEventListener("click",function(){
-    //恢复到之前的绘画状态
-    const ctxData= ctxStack.pop();
-    ctx.putImageData(ctxData,0,0)
-    
-    console.log(1)
-})
+//加入栈中
+function pushIntoStack(){
+    const x = realCtx.getImageData(0, 0, width, height);
+    ctxStack.push(x);
+}
