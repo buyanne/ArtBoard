@@ -25,7 +25,7 @@ var eraser = document.querySelector("#eraser");
 var colorChange = document.querySelector("#colorChange");
 
 //当前颜色
-var color="000000";
+var color = "000000";
 
 //表图层
 var canvas = document.getElementById("Canvas");
@@ -42,7 +42,6 @@ var realCtx = realCanvas.getContext("2d");
 var ctxStack = [];
 var isFirst = true;
 //初始化栈底为一个空白图层
-
 
 
 /*
@@ -72,14 +71,14 @@ function windowAddMouseWheel() {
                         }
                         break;
                     }
-                    case 4:{
+                    case 4: {
                         ctx.lineWidth += mouseScrollChange;
                         if (ctx.lineWidth > ctxLineWidthMax) {
                             ctx.lineWidth = ctxLineWidthMax;
                         }
                         break;
                     }
-                    case 5:{
+                    case 5: {
                         ctx.lineWidth += mouseScrollChange;
                         if (ctx.lineWidth > ctxLineWidthMax) {
                             ctx.lineWidth = ctxLineWidthMax;
@@ -117,14 +116,14 @@ function windowAddMouseWheel() {
                         }
                         break;
                     }
-                    case 4:{
+                    case 4: {
                         ctx.lineWidth -= mouseScrollChange;
                         if (ctx.lineWidth < ctxLineWidthMin) {
                             ctx.lineWidth = ctxLineWidthMin;
                         }
                         break;
                     }
-                    case 5:{
+                    case 5: {
                         ctx.lineWidth -= mouseScrollChange;
                         if (ctx.lineWidth < ctxLineWidthMin) {
                             ctx.lineWidth = ctxLineWidthMin;
@@ -218,6 +217,8 @@ function downLoadImage() {
 
 //清空canvas
 function clearCanvas() {
+    //清空之前添加到栈中
+    pushIntoStack();
     realCtx.clearRect(0, 0, width, height);
     ctx.clearRect(0, 0, width, height);
 }
@@ -282,15 +283,23 @@ buttons[8].addEventListener("click", function () {
         realCtx.putImageData(imageData, 0, 0);
         ctx.clearRect(0, 0, width, height);
     }
-    // console.log(ctxStack.length);
 });
 
 //ctrl＋z撤回
 //暂时不能解决
 
 //加入栈中
-function pushIntoStack(){
-    const x = realCtx.getImageData(0, 0, width, height);
-    ctxStack.push(x);
+//栈的最大长度，超过则删除栈底元素
+var stackMaxSize=30;
+function pushIntoStack() {
+    if(ctxStack.length<stackMaxSize){
+        const x = realCtx.getImageData(0, 0, width, height);
+        ctxStack.push(x);
+    }else{
+        ctxStack.shift();
+        // console.log(ctxStack.length);
+        const x = realCtx.getImageData(0, 0, width, height);
+        ctxStack.push(x);
+    }
 }
 
