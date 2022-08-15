@@ -25,6 +25,10 @@ canvas.addEventListener("mouseenter", mouseenter, false);
 canvas.addEventListener("mouseleave", mouseleave, false);
 
 
+//保存一个使用橡皮擦之前的图片
+const vet = [];
+
+
 //获取当前的鼠标位置（相对于canvas的）
 function getPos(e) {
     return {
@@ -59,15 +63,12 @@ function mousedown(e) {
     startPoint = {x, y};
     points.push(startPoint);
 
-
-    //确保栈底层永远都是有一个空白的
-    if (ctxStack.length === 0) {
-        pushIntoStack();
-    }
-
     switch (mainArtBoardDiv.boardState) {
         case 7: {
-            // pushIntoStack();
+            
+            //添加橡皮擦使用前的图像
+            const temp = realCtx.getImageData(0, 0, width, height);
+            vet.push(temp);
             clearArc(startPoint, toolsDiv.rubberWidth, ctx);
         }
     }
@@ -119,7 +120,7 @@ function mousemove(e) {
         }
         //圆形
         case 4: {
-            //这是第一种画法，起点时圆心
+            //这是第一种画法，起点是圆心
             // const endPoint = getPos(e);
             //
             // var radius = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2) + Math.pow(startPoint.y - endPoint.y, 2));
@@ -184,31 +185,49 @@ function mouseup(e) {
     if (mousePressed === false) {
         return;
     }
-
     if (mouseIsInCanvas) {
         switch (mainArtBoardDiv.boardState) {
             case 2: {
                 const {x, y} = getPos(e);
-
                 points.push({x, y});
-
                 if (points.length > 3) {
                     const lastTwoPoints = points.slice(-2);
-
                     const controlPoint = lastTwoPoints[0];
-
                     const endPoint = lastTwoPoints[1];
-
                     drawLine(startPoint, controlPoint, endPoint);
+                }
+                saveImage();
+                pushIntoStack();
+                break;
+            }
+            case 3: {
+                saveImage();
+                pushIntoStack();
+                break;
+            }
+            case 4: {
+                saveImage();
+                pushIntoStack();
+                break;
+            }
+            case 5: {
+                saveImage();
+                pushIntoStack();
+                break;
+            }
+            case 7: {
+                const temp = vet.pop();
+                //限制最大长度
+                if (ctxStack.length <= stackMaxSize) {
+                    ctxStack.push(temp);
+                } else {
+                    ctxStack.shift();
+                    ctxStack.push(temp);
                 }
                 break;
             }
         }
-        saveImage();
-        pushIntoStack();
     }
-
-
     startPoint = null;
     mousePressed = false;
     points = [];
