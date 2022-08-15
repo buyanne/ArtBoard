@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+*:focus{
+    outline: none;
+}
+
 .MainArtBoardDiv {
     position: absolute;
     left: 400px;

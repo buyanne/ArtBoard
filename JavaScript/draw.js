@@ -1,4 +1,3 @@
-
 // 橡皮擦宽度
 var toolsDiv = document.querySelector(".ToolsDiv");
 toolsDiv.rubberWidth = rubberWidthDefault;
@@ -40,6 +39,7 @@ function drawLine(startPoint, controlPoint, endPoint) {
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.quadraticCurveTo(controlPoint.x, controlPoint.y, endPoint.x, endPoint.y);
     ctx.stroke();
+    ctx.strokeStyle = color;
     ctx.closePath();
 }
 
@@ -61,19 +61,11 @@ function mousedown(e) {
 
 
     //确保栈底层永远都是有一个空白的
-    if(ctxStack.length===0){
+    if (ctxStack.length === 0) {
         pushIntoStack();
     }
 
     switch (mainArtBoardDiv.boardState) {
-        case 2: {
-
-            break;
-        }
-        case 3: {
-
-            break;
-        }
         case 7: {
             // pushIntoStack();
             clearArc(startPoint, toolsDiv.rubberWidth, ctx);
@@ -112,10 +104,68 @@ function mousemove(e) {
         //直线段
         case 3: {
             const endPoint = getPos(e);
+            //传统直线画法
+            // ctx.beginPath();
+            // ctx.clearRect(0, 0, width, height);
+            // ctx.moveTo(startPoint.x, startPoint.y);
+            // ctx.lineTo(endPoint.x, endPoint.y);
+            // ctx.stroke();
+            // ctx.closePath();
+
+            //调用贝塞尔曲线的画法
+            ctx.clearRect(0, 0, width, height);
+            drawLine(startPoint, endPoint, endPoint);
+            break;
+        }
+        //圆形
+        case 4: {
+            //这是第一种画法，起点时圆心
+            // const endPoint = getPos(e);
+            //
+            // var radius = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2) + Math.pow(startPoint.y - endPoint.y, 2));
+            //
+            // ctx.beginPath();
+            // ctx.clearRect(0, 0, width, height);
+            //
+            // ctx.arc(startPoint.x, startPoint.y, radius, 0, 2 * Math.PI);
+            // ctx.stroke();
+            // ctx.closePath();
+            const endPoint = getPos(e);
+
+            var x = (startPoint.x + endPoint.x) >> 1;
+            var y = (startPoint.y + endPoint.y) >> 1;
+
+            var radius = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2)
+                + Math.pow(startPoint.y - endPoint.y, 2)) / 2;
+
             ctx.beginPath();
             ctx.clearRect(0, 0, width, height);
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = color;
+            //图形的填充颜色
+            // ctx.fillStyle='red';
+            // ctx.fill();
+            //图形的边框
+            ctx.stroke();
+            ctx.closePath();
+            break;
+        }
+
+        //矩形
+        case 5: {
+            const endPoint = getPos(e);
+
+            ctx.beginPath();
+            ctx.clearRect(0, 0, width, height);
+
+            //顺时针画一个矩形
             ctx.moveTo(startPoint.x, startPoint.y);
+            ctx.lineTo(endPoint.x, startPoint.y);
             ctx.lineTo(endPoint.x, endPoint.y);
+            ctx.lineTo(startPoint.x, endPoint.y);
+            ctx.lineTo(startPoint.x, startPoint.y);
+
+            ctx.strokeStyle = color;
             ctx.stroke();
             ctx.closePath();
             break;
@@ -153,10 +203,6 @@ function mouseup(e) {
                 }
                 break;
             }
-            case 3: {
-                //todo
-                break;
-            }
         }
         saveImage();
         pushIntoStack();
@@ -167,7 +213,6 @@ function mouseup(e) {
     mousePressed = false;
     points = [];
 }
-
 
 
 //当鼠标进入canvas
