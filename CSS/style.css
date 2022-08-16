@@ -1,3 +1,7 @@
+body{
+    background:url("../Resource/Image/bkg.png");
+    
+}
 * {
     margin: 0;
     padding: 0;
@@ -14,8 +18,9 @@
 }
 
 .ToolsDiv {
+    backdrop-filter: blur(6px);
     position: absolute;
-    background-color: rgba(53, 190, 130, 0.21);
+    background-color: rgba(53, 190, 130, 0.15);
     height: 100px;
     width: 1150px;
     top: -125px;
@@ -29,7 +34,10 @@
     position: relative;
     width: 960px;
     height: 580px;
-    background: url("../Resource/Image/background.png");
+    border-radius: 10px;
+    background: url("../Resource/Image/background1.png");
+    backdrop-filter: blur(6px);
+
 }
 
 
