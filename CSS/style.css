@@ -71,9 +71,16 @@
 
 
 #colorChange{
-    
     background-color: brown;
     height: 200px;
     width: 200px;
     position:fixed;
+}
+
+#palette{
+    position: absolute;
+    left: 30px;
+    top: 200px;
+    height: 300px;
+    width:300px;
 }
