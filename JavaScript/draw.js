@@ -64,6 +64,11 @@ function mousedown(e) {
     points.push(startPoint);
 
     switch (mainArtBoardDiv.boardState) {
+        case 1:{
+
+
+            break;
+        }
         case 7: {
             
             //添加橡皮擦使用前的图像

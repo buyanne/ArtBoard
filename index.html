@@ -23,6 +23,7 @@
             <!--todo：调色板-->
             <template id="colorChange">
 
+
             </template>
             <!--        工具栏-->
             <div class="ToolsDiv">
@@ -45,12 +46,22 @@
                 <canvas id="Canvas" height="580" width="960"></canvas>
                 <canvas id="RealCanvas" height="580" width="960"></canvas>
             </div>
-
+        </div>
+        <!--        调色盘和彩虹条-->
+        <div class="Colors">
+            <div class="paletteDiv">
+<!--                调色盘-->
+                <canvas id="palette"></canvas>
+            </div>
+            <div class="paletteBarDiv">
+<!--                彩虹条-->
+                <canvas id="paletteBar"></canvas>
+            </div>
         </div>
 
     </body>
     <script src="JavaScript/jquery.min.js"></script>
     <script src="JavaScript/main.js"></script>
     <script src="JavaScript/draw.js"></script>
-<!--    <script src="JavaScript/test.js"></script>-->
+    <script src="JavaScript/colorPicker.js"></script>
 </html>
