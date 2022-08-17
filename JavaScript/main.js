@@ -27,6 +27,9 @@ var colorChange = document.querySelector("#colorChange");
 //当前颜色
 var color = "000000";
 
+//粗细滑块
+var widthRange = document.querySelector("#widthRange");
+
 //表图层
 var canvas = document.getElementById("Canvas");
 //添加偏移量
@@ -48,10 +51,10 @@ var isFirst = true;
 *  添加鼠标滚轮事件，可以调整线条的粗细
 * */
 windowAddMouseWheel();
-
+widthRange.value = ctx.lineWidth;
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
-
+        widthRange.value = ctx.lineWidth;
         e = e || window.event;
         if (e.wheelDelta) {  //chrome
             //向上滚动
@@ -313,12 +316,15 @@ function pushIntoStack() {
  */
 var isOpen = false;
 var widthChange = document.querySelector("#widthChange");
+var widthRange = document.querySelector("#widthRange")
  buttons[1].addEventListener("click",function(){
     if(isOpen===false){
         widthChange.id="widthChange1";
+        widthRange.id = "widthRange1"
         isOpen=true;
     }else{
         widthChange.id="widthChange";
+        widthRange.id ="widthRange";
         isOpen=false;
     }
  })
@@ -334,3 +340,11 @@ var isFill = document.querySelector("#isFill");
         isOpen1=false;
     }
  })
+
+ /**
+  * 粗细下滑菜单相关函数
+  */
+
+widthRange.addEventListener("input",function(){
+    ctx.lineWidth=widthRange.value;
+})

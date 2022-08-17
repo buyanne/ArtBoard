@@ -93,7 +93,7 @@ body{
     border-radius: 50px;
     z-index: 3;
     background-color: white;
-    height: 150px;
+    height: 100px;
     width: 200px;
     position:absolute;
     top:-25px;
@@ -123,6 +123,16 @@ body{
     position:absolute;
     top:-25px;
     left:490px;
+}
+
+#widthRange1{
+    position:absolute;
+    top:43px;
+    left:30px;
+}
+#widthRange{
+    visibility: hidden;
+
 }
 
 #palette{
