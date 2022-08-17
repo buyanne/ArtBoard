@@ -173,7 +173,8 @@ buttons[2].className = "after";
 //绑定事件
 for (let i = 2; i <= 7; i++) {
 
-    buttons[i].addEventListener("click", function changeState() {
+    if(i!==6){
+        buttons[i].addEventListener("click", function changeState() {
         //点击事件
         //改变当前网页的state
         mainArtBoardDiv.boardState = i;
@@ -194,6 +195,9 @@ for (let i = 2; i <= 7; i++) {
             }
         }
     });
+    }
+
+    
 }
 
 //下载图片
@@ -304,3 +308,29 @@ function pushIntoStack() {
 }
 
 
+/**
+ * 下拉菜单的实现
+ */
+var isOpen = false;
+var widthChange = document.querySelector("#widthChange");
+ buttons[1].addEventListener("click",function(){
+    if(isOpen===false){
+        widthChange.id="widthChange1";
+        isOpen=true;
+    }else{
+        widthChange.id="widthChange";
+        isOpen=false;
+    }
+ })
+
+var isOpen1 = false;
+var isFill = document.querySelector("#isFill");
+ buttons[6].addEventListener("click",function(){
+    if(isOpen1===false){
+        isFill.id="isFill1";
+        isOpen1=true;
+    }else{
+        isFill.id="isFill";
+        isOpen1=false;
+    }
+ })
