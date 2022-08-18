@@ -1,7 +1,7 @@
 //线条的最大值最小值
 var ctxLineWidthMax = 10, ctxLineWidthMin = 1;
 //线条的默认值
-var ctxLineWidthDefault = 2;
+var ctxLineWidthDefault = ctxLineWidthMax;
 //鼠标滚动时候的变化快慢
 var mouseScrollChange = 0.1;
 
@@ -13,7 +13,7 @@ var rubberWidthDefault = 4;
 var rubberWidthChange = 0.5;
 //橡皮图片偏移量
 var eraserChange = 10;
-var eraserHeight = 20;
+var eraserHeight = 20
 
 // canvas的长宽
 let height = 580;
@@ -43,8 +43,8 @@ var realCtx = realCanvas.getContext("2d");
 
 //撤回保存的栈
 var ctxStack = [];
-var isFirst = true;
-//初始化栈底为一个空白图层
+//栈的最大长度，超过则删除栈底元素
+var stackMaxSize = 30;
 
 
 /*
@@ -90,13 +90,14 @@ function windowAddMouseWheel() {
                     }
                     case 7: {
                         //橡皮图片
-                        eraserHeight += rubberWidthChange;
-                        eraserChange += rubberWidthChange / 2;
-                        eraser.style.height = eraserHeight + "px"
-
+                        //防止过于大的图片
                         toolsDiv.rubberWidth += rubberWidthChange;
                         if (toolsDiv.rubberWidth >= rubberWidthMax) {
                             toolsDiv.rubberWidth = rubberWidthMax;
+                        } else {
+                            eraserHeight += rubberWidthChange;
+                            eraserChange += rubberWidthChange / 2;
+                            eraser.style.height = eraserHeight + "px"
                         }
                         break;
                     }
@@ -135,14 +136,14 @@ function windowAddMouseWheel() {
                     }
                     case 7: {
                         //橡皮图片
-                        eraserHeight -= rubberWidthChange;
-                        eraserChange -= rubberWidthChange / 2;
-                        eraser.style.height = eraserHeight + "px"
-
-
+                        //防止过于小的图片
                         toolsDiv.rubberWidth -= rubberWidthChange;
                         if (toolsDiv.rubberWidth <= rubberWidthMin) {
                             toolsDiv.rubberWidth = rubberWidthMin;
+                        } else {
+                            eraserHeight -= rubberWidthChange;
+                            eraserChange -= rubberWidthChange / 2;
+                            eraser.style.height = eraserHeight + "px"
                         }
                         break;
                     }
@@ -254,7 +255,6 @@ function clearArc(p) {
 /*
 使橡皮擦图片跟随指针
  */
-
 canvas.addEventListener('mousemove', function (e) {
     if (mainArtBoardDiv.boardState === 7) {
         var pagex = e.pageX - eraserChange + 'px';
@@ -292,23 +292,20 @@ buttons[8].addEventListener("click", function () {
     }
 });
 
-//ctrl＋z撤回
-//暂时不能解决
-
 //加入栈中
-//栈的最大长度，超过则删除栈底元素
-var stackMaxSize=30;
 function pushIntoStack() {
-    if(ctxStack.length<stackMaxSize){
+    if (ctxStack.length < stackMaxSize) {
         const x = realCtx.getImageData(0, 0, width, height);
         ctxStack.push(x);
-    }else{
+    } else {
         ctxStack.shift();
         // console.log(ctxStack.length);
         const x = realCtx.getImageData(0, 0, width, height);
         ctxStack.push(x);
     }
+
 }
+
 
 
 /**
@@ -348,3 +345,4 @@ var isFill = document.querySelector("#isFill");
 widthRange.addEventListener("input",function(){
     ctx.lineWidth=widthRange.value;
 })
+
