@@ -84,21 +84,22 @@ body{
 }
 #widthChange{
     visibility:hidden;
-    background-color: white;
+    background-color: rgb(255, 255, 255,0);
     transition: all 0.2s;
     border-radius: 50px;
-    height: 15px;
-    width: 20px;
+    height: 100px;
+    width: 200px;
     position:absolute;
-    top:-80px;
-    left:75px;
+    top:-120px;
+    left:-15px;
 }
 
 #widthChange1{
-    transition: all 0.2s ease ;
+    transition:all 0.2s ease ;
+    
     border-radius: 50px;
     z-index: 3;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.7);
     height: 100px;
     width: 200px;
     position:absolute;
@@ -123,22 +124,25 @@ body{
     transition: all 0.2s ease ;
     border-radius: 50px;
     z-index: 3;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.514);
     height: 150px;
     width: 200px;
     position:absolute;
     top:-25px;
     left:490px;
+    backdrop-filter: blur(6px);
 }
 
 #widthRange1{
+    
     position:absolute;
     top:43px;
     left:30px;
 }
 #widthRange{
-    visibility: hidden;
-
+    
+    visibility:hidden;
+    height: auto;
 }
 
 #palette{
@@ -156,6 +160,7 @@ body{
     top:200px;
     height: 256px;
     width: 30px;
+    
 }
 
 #selectedColorText{
@@ -170,4 +175,15 @@ body{
     top: 485px;
     width: 100px;
     height: 100px;
+}
+
+#bkColor{
+    background-color: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    left:30px;
+    top:185px;
+    width: 350px;
+    height: 425px;
+    border-radius: 25px;
+    backdrop-filter: blur(6px);
 }

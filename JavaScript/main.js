@@ -51,10 +51,10 @@ var stackMaxSize = 30;
 *  添加鼠标滚轮事件，可以调整线条的粗细
 * */
 windowAddMouseWheel();
-widthRange.value = ctx.lineWidth;
+widthRange.value = ctx.lineWidth*100;
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
-        widthRange.value = ctx.lineWidth;
+        widthRange.value = ctx.lineWidth*100;
         e = e || window.event;
         if (e.wheelDelta) {  //chrome
             //向上滚动
@@ -343,6 +343,6 @@ var isFill = document.querySelector("#isFill");
   */
 
 widthRange.addEventListener("input",function(){
-    ctx.lineWidth=widthRange.value;
+    ctx.lineWidth=widthRange.value/100;
 })
 
