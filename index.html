@@ -22,8 +22,10 @@
             <img src="Resource/Image/circle.png" id="eraser" alt="橡皮擦">
             <!--下拉菜单-->
             <div id="widthChange">
-
-            <input type = "range" min="1" max="10" id ="widthRange" >
+            <div>
+                <input type = "range" min="1" max="1000" id ="widthRange" >
+            </div>
+            
             </div>
             <div id="isFill">
 
@@ -53,6 +55,7 @@
         </div>
         <!--        调色盘和彩虹条-->
         <div class="Colors">
+            <div id="bkColor"></div>
             <div class="paletteDiv">
 <!--                调色盘-->
                 <canvas id="palette"></canvas>
