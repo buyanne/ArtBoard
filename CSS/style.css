@@ -82,13 +82,63 @@ body{
     z-index: 1;
     pointer-events: none;
 }
+#widthChange{
+    visibility:hidden;
+    background-color: white;
+    transition: all 0.2s;
+    border-radius: 50px;
+    height: 15px;
+    width: 20px;
+    position:absolute;
+    top:-80px;
+    left:75px;
+}
 
-
-#colorChange{
-    background-color: brown;
-    height: 200px;
+#widthChange1{
+    transition: all 0.2s ease ;
+    border-radius: 50px;
+    z-index: 3;
+    background-color: white;
+    height: 100px;
     width: 200px;
-    position:fixed;
+    position:absolute;
+    top:-25px;
+    left:-15px;
+}
+
+#isFill{
+    visibility:hidden;
+    background-color: white;
+    transition: all 0.2s;
+    border-radius: 50px;
+    height: 15px;
+    width: 20px;
+    position:absolute;
+    top:-80px;
+    left:575px;
+
+}
+
+#isFill1{
+    transition: all 0.2s ease ;
+    border-radius: 50px;
+    z-index: 3;
+    background-color: white;
+    height: 150px;
+    width: 200px;
+    position:absolute;
+    top:-25px;
+    left:490px;
+}
+
+#widthRange1{
+    position:absolute;
+    top:43px;
+    left:30px;
+}
+#widthRange{
+    visibility: hidden;
+
 }
 
 #palette{

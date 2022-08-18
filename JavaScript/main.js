@@ -27,6 +27,9 @@ var colorChange = document.querySelector("#colorChange");
 //当前颜色
 var color = "000000";
 
+//粗细滑块
+var widthRange = document.querySelector("#widthRange");
+
 //表图层
 var canvas = document.getElementById("Canvas");
 //添加偏移量
@@ -48,10 +51,10 @@ var stackMaxSize = 30;
 *  添加鼠标滚轮事件，可以调整线条的粗细
 * */
 windowAddMouseWheel();
-
+widthRange.value = ctx.lineWidth;
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
-
+        widthRange.value = ctx.lineWidth;
         e = e || window.event;
         if (e.wheelDelta) {  //chrome
             //向上滚动
@@ -174,7 +177,8 @@ buttons[2].className = "after";
 //绑定事件
 for (let i = 2; i <= 7; i++) {
 
-    buttons[i].addEventListener("click", function changeState() {
+    if(i!==6){
+        buttons[i].addEventListener("click", function changeState() {
         //点击事件
         //改变当前网页的state
         mainArtBoardDiv.boardState = i;
@@ -195,6 +199,9 @@ for (let i = 2; i <= 7; i++) {
             }
         }
     });
+    }
+
+    
 }
 
 //下载图片
@@ -296,4 +303,46 @@ function pushIntoStack() {
         const x = realCtx.getImageData(0, 0, width, height);
         ctxStack.push(x);
     }
+
 }
+
+
+
+/**
+ * 下拉菜单的实现
+ */
+var isOpen = false;
+var widthChange = document.querySelector("#widthChange");
+var widthRange = document.querySelector("#widthRange")
+ buttons[1].addEventListener("click",function(){
+    if(isOpen===false){
+        widthChange.id="widthChange1";
+        widthRange.id = "widthRange1"
+        isOpen=true;
+    }else{
+        widthChange.id="widthChange";
+        widthRange.id ="widthRange";
+        isOpen=false;
+    }
+ })
+
+var isOpen1 = false;
+var isFill = document.querySelector("#isFill");
+ buttons[6].addEventListener("click",function(){
+    if(isOpen1===false){
+        isFill.id="isFill1";
+        isOpen1=true;
+    }else{
+        isFill.id="isFill";
+        isOpen1=false;
+    }
+ })
+
+ /**
+  * 粗细下滑菜单相关函数
+  */
+
+widthRange.addEventListener("input",function(){
+    ctx.lineWidth=widthRange.value;
+})
+
