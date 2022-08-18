@@ -40,11 +40,13 @@ function getPos(e) {
 //画贝塞尔曲线
 function drawLine(startPoint, controlPoint, endPoint) {
     ctx.beginPath();
+    ctx.strokeStyle=color;
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.quadraticCurveTo(controlPoint.x, controlPoint.y, endPoint.x, endPoint.y);
-    ctx.stroke();
-    ctx.strokeStyle = color;
     ctx.closePath();
+    ctx.stroke();
 }
 
 //加载图片
@@ -64,11 +66,6 @@ function mousedown(e) {
     points.push(startPoint);
 
     switch (mainArtBoardDiv.boardState) {
-        case 1:{
-
-
-            break;
-        }
         case 7: {
             
             //添加橡皮擦使用前的图像
@@ -110,8 +107,9 @@ function mousemove(e) {
         //直线段
         case 3: {
             const endPoint = getPos(e);
-            //传统直线画法
+            // 传统直线画法
             // ctx.beginPath();
+            // ctx.lineCap="round";
             // ctx.clearRect(0, 0, width, height);
             // ctx.moveTo(startPoint.x, startPoint.y);
             // ctx.lineTo(endPoint.x, endPoint.y);
@@ -136,6 +134,8 @@ function mousemove(e) {
             // ctx.arc(startPoint.x, startPoint.y, radius, 0, 2 * Math.PI);
             // ctx.stroke();
             // ctx.closePath();
+
+
             const endPoint = getPos(e);
 
             var x = (startPoint.x + endPoint.x) >> 1;
@@ -148,12 +148,13 @@ function mousemove(e) {
             ctx.clearRect(0, 0, width, height);
             ctx.arc(x, y, radius, 0, 2 * Math.PI);
             ctx.strokeStyle = color;
+            ctx.closePath();
             //图形的填充颜色
             // ctx.fillStyle='red';
             // ctx.fill();
             //图形的边框
             ctx.stroke();
-            ctx.closePath();
+
             break;
         }
 
@@ -166,14 +167,17 @@ function mousemove(e) {
 
             //顺时针画一个矩形
             ctx.moveTo(startPoint.x, startPoint.y);
+
+            ctx.lineJoin="round";
+
             ctx.lineTo(endPoint.x, startPoint.y);
             ctx.lineTo(endPoint.x, endPoint.y);
             ctx.lineTo(startPoint.x, endPoint.y);
             ctx.lineTo(startPoint.x, startPoint.y);
-
+            ctx.closePath();
             ctx.strokeStyle = color;
             ctx.stroke();
-            ctx.closePath();
+
             break;
         }
         //橡皮擦

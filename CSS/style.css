@@ -10,6 +10,12 @@ body{
 *:focus{
     outline: none;
 }
+/*
+    全局为一个指针
+*/
+body{
+    cursor: url("../Resource/Image/cursor.gif") 1 1,crosshair;
+}
 
 .MainArtBoardDiv {
     position: absolute;
@@ -87,8 +93,31 @@ body{
 
 #palette{
     position: absolute;
-    left: 30px;
+    left: 50px;
     top: 200px;
-    height: 300px;
-    width:300px;
+    height: 256px;
+    width:256px;
+}
+
+
+#paletteBar{
+    position: absolute;
+    left: 330px;
+    top:200px;
+    height: 256px;
+    width: 30px;
+}
+
+#selectedColorText{
+    position: absolute;
+    left: 75px;
+    top: 520px;
+}
+
+#selectedColor{
+    position: absolute;
+    left: 150px;
+    top: 485px;
+    width: 100px;
+    height: 100px;
 }
