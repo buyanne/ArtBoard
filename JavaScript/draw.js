@@ -253,7 +253,8 @@ function mouseup(e) {
                 }
                 saveImage();
                 pushIntoStack();
-                pushIntoNum(points);
+
+                pushIntoNum();
 
                 break;
             }

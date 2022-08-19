@@ -242,6 +242,11 @@ function clearCanvas() {
     pushIntoStack();
     realCtx.clearRect(0, 0, width, height);
     ctx.clearRect(0, 0, width, height);
+
+    num = new Array(width);
+    for (let i = 0; i < width; i++) {
+        num[i] = new Array(height).fill(0);
+    }
 }
 
 //清空圆形区域
@@ -391,7 +396,7 @@ function bfs(i, j) {
             if (xx < 0 || xx >= width || yy < 0 || yy >= height) {
                 continue;
             }
-            if(vis[xx][yy]===1){
+            if (vis[xx][yy] === 1) {
                 continue;
             }
             que.push({
@@ -402,43 +407,99 @@ function bfs(i, j) {
     }
 }
 
-function pushIntoNum(points) {
+let cnt = 0;
 
+//根据笔的粗细来填充像素，
+function fillPixel(x, y, w) {
+    //除 2 便于遍历
+    let half = Math.ceil(w / 2);
+    for (let i = x - half; i <= x + half; i++) {
+        for (let j = y - half; j <= y + half; j++) {
+            //边界条件的判断
+
+            if (i < 0 || j < 0 || i >= width || j >= height) {
+                continue;
+            }
+            num[i][j] = 1;
+        }
+    }
+}
+
+function pushIntoNum() {
     let len = points.length;
 
+
     for (let i = 0; i < len - 1; i++) {
+        //第一个点
+        let x1 = points[i].x;
         let y1 = points[i].y;
+
+        //第二个点
+        let x2 = points[i + 1].x;
         let y2 = points[i + 1].y;
 
-        let x1 = points[i].x;
-        let x2 = points[i + 1].x;
+        let k = 0;
+        //斜率不存在
+        if (x1 === x2) {
+            //确定 y1 为小的点
+            if (y1 > y2) {
+                //交换两个点的坐标
+                let temp = y1;
+                y1 = y2;
+                y2 = temp;
 
-        //确保小的为x1
-        if (x2 < x1) {
-            let temp = x1;
-            x1 = x2;
-            x2 = temp;
-
-            temp = y1;
-            y1 = y2;
-            y2 = temp;
-        }
-
-        //斜率
-        if (x1!==x2) {
-            let k = (y2 - y1) / (x2 - x1);
-
-            for(let x=x1;x<=x2;x++){
-                let y=Math.ceil(k*(x-x1)+y1);
-                num[x][y]=1;
-
+                temp = x1;
+                x1 = x2;
+                x2 = temp;
+            }
+            for (let y = y1; y <= y2; y++) {
+                fillPixel(x1, y, ctx.lineWidth);
             }
 
-        } else {
-            for(let y=y1;y<=y2;y++){
-                num[x1][y]=1;
-                console.log(1);
+        } else {//斜率存在又有几种情况
+            if (x1 > x2) {
+                let temp = y1;
+                y1 = y2;
+                y2 = temp;
+
+                temp = x1;
+                x1 = x2;
+                x2 = temp;
             }
+            //上一个点
+            let preY = y1;
+            let preX = x1;
+            //x从小到大遍历
+            for (let x = x1; x <= x2; x++) {
+                let y = k * (x - x1) + y1;
+
+                //若高度差大于1则中间有空隙要补齐
+                if (Math.abs(y - preY) > 1) {
+                    if (y < preY) {
+                        for (let j = y; j <= preY; j++) {
+                            fillPixel(x, j, ctx.lineWidth);
+                        }
+                    } else {
+                        for (let j = preY; j <= y; j++) {
+                            fillPixel(x, j, ctx.lineWidth);
+                        }
+                    }
+
+                } else {//斜率平缓没有空隙
+                    if (x - preX > 1) {
+                        for (let i = preX; i <= x; i++) {
+                            y = k * (x - i) + y1;
+                            fillPixel(i, y, ctx.lineWidth);
+                        }
+                    } else {
+                        fillPixel(x, y, ctx.lineWidth);
+                    }
+                }
+                preY = y;
+                preX = x;
+            }
+
         }
+
     }
 }
