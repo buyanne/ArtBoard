@@ -52,6 +52,9 @@ body{
     z-index: 1;
     left: 0;
     top: 0;
+    width: 960px;
+    height: 580px;
+
     cursor: url("../Resource/Image/cursor.gif") 1 1, crosshair;
 }
 
@@ -107,7 +110,7 @@ body{
     left:-15px;
 }
 
-#isFill{
+/*#isFill{
     visibility:hidden;
     background-color: white;
     transition: all 0.2s;
@@ -131,7 +134,7 @@ body{
     top:-25px;
     left:490px;
     backdrop-filter: blur(6px);
-}
+}*/
 
 #widthRange1{
     

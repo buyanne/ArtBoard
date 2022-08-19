@@ -1,7 +1,7 @@
 //线条的最大值最小值
 var ctxLineWidthMax = 10, ctxLineWidthMin = 1;
 //线条的默认值
-var ctxLineWidthDefault = ctxLineWidthMax;
+var ctxLineWidthDefault = 2;
 //鼠标滚动时候的变化快慢
 var mouseScrollChange = 0.1;
 
@@ -16,16 +16,17 @@ var eraserChange = 10;
 var eraserHeight = 20
 
 // canvas的长宽
-let height = 580;
-let width = 960;
+var height = 580;
+var width = 960;
 
 //橡皮擦图片
 var eraser = document.querySelector("#eraser");
 
-var colorChange = document.querySelector("#colorChange");
 
 //当前颜色
 var color = "000000";
+//保存颜色的rgb信息
+var colorR = 255, colorG = 255, colorB = 255;
 
 //粗细滑块
 var widthRange = document.querySelector("#widthRange");
@@ -46,15 +47,30 @@ var ctxStack = [];
 //栈的最大长度，超过则删除栈底元素
 var stackMaxSize = 30;
 
-
+//已经访问的像素点
+let vis = new Array(width);
+//初始化vis数组
+for (let i = 0; i < width; i++) {
+    vis[i] = new Array(height).fill(0);
+}
+//以画线的像素点
+let num = new Array(width);
+for (let i = 0; i < width; i++) {
+    num[i] = new Array(height).fill(0);
+}
+//存储这一个封闭图形
+let v = [];
+//四个方向的遍历
+var d = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 /*
 *  添加鼠标滚轮事件，可以调整线条的粗细
 * */
 windowAddMouseWheel();
-widthRange.value = ctx.lineWidth*100;
+widthRange.value = ctx.lineWidth * 100;
+
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
-        widthRange.value = ctx.lineWidth*100;
+        widthRange.value = ctx.lineWidth * 100;
         e = e || window.event;
         if (e.wheelDelta) {  //chrome
             //向上滚动
@@ -177,8 +193,8 @@ buttons[2].className = "after";
 //绑定事件
 for (let i = 2; i <= 7; i++) {
 
-    if(i!==6){
-        buttons[i].addEventListener("click", function changeState() {
+
+    buttons[i].addEventListener("click", function changeState() {
         //点击事件
         //改变当前网页的state
         mainArtBoardDiv.boardState = i;
@@ -199,9 +215,6 @@ for (let i = 2; i <= 7; i++) {
             }
         }
     });
-    }
-
-    
 }
 
 //下载图片
@@ -307,42 +320,125 @@ function pushIntoStack() {
 }
 
 
-
 /**
  * 下拉菜单的实现
  */
 var isOpen = false;
 var widthChange = document.querySelector("#widthChange");
 var widthRange = document.querySelector("#widthRange")
- buttons[1].addEventListener("click",function(){
-    if(isOpen===false){
-        widthChange.id="widthChange1";
+buttons[1].addEventListener("click", function () {
+    if (isOpen === false) {
+        widthChange.id = "widthChange1";
         widthRange.id = "widthRange1"
-        isOpen=true;
-    }else{
-        widthChange.id="widthChange";
-        widthRange.id ="widthRange";
-        isOpen=false;
+        isOpen = true;
+    } else {
+        widthChange.id = "widthChange";
+        widthRange.id = "widthRange";
+        isOpen = false;
     }
- })
+})
 
 var isOpen1 = false;
 var isFill = document.querySelector("#isFill");
- buttons[6].addEventListener("click",function(){
-    if(isOpen1===false){
-        isFill.id="isFill1";
-        isOpen1=true;
-    }else{
-        isFill.id="isFill";
-        isOpen1=false;
+buttons[6].addEventListener("click", function () {
+    if (isOpen1 === false) {
+        isFill.id = "isFill1";
+        isOpen1 = true;
+    } else {
+        isFill.id = "isFill";
+        isOpen1 = false;
     }
- })
-
- /**
-  * 粗细下滑菜单相关函数
-  */
-
-widthRange.addEventListener("input",function(){
-    ctx.lineWidth=widthRange.value/100;
 })
 
+/**
+ * 粗细下滑菜单相关函数
+ */
+
+widthRange.addEventListener("input", function () {
+    ctx.lineWidth = widthRange.value / 100;
+})
+
+
+function bfs(i, j) {
+    var que = [];
+
+    que.push({
+        x: i,
+        y: j
+    });
+
+    while (que.length !== 0) {
+        var temp = que[0];
+        que.shift();
+        let x = temp.x;
+        let y = temp.y;
+        if (vis[x][y] === 1) {
+            continue;
+        }
+        vis[x][y] = 1;
+        if (num[x][y] === 1) {
+            continue;
+        }
+        v.push({
+            x: x,
+            y: y
+        })
+
+        for (let i = 0; i < 4; i++) {
+            let xx = x + d[i][0];
+            let yy = y + d[i][1];
+
+            if (xx < 0 || xx >= width || yy < 0 || yy >= height) {
+                continue;
+            }
+            if(vis[xx][yy]===1){
+                continue;
+            }
+            que.push({
+                x: xx,
+                y: yy
+            });
+        }
+    }
+}
+
+function pushIntoNum(points) {
+
+    let len = points.length;
+
+    for (let i = 0; i < len - 1; i++) {
+        let y1 = points[i].y;
+        let y2 = points[i + 1].y;
+
+        let x1 = points[i].x;
+        let x2 = points[i + 1].x;
+
+        //确保小的为x1
+        if (x2 < x1) {
+            let temp = x1;
+            x1 = x2;
+            x2 = temp;
+
+            temp = y1;
+            y1 = y2;
+            y2 = temp;
+        }
+
+        //斜率
+        if (x1!==x2) {
+            let k = (y2 - y1) / (x2 - x1);
+
+            for(let x=x1;x<=x2;x++){
+                let y=Math.ceil(k*(x-x1)+y1);
+                num[x][y]=1;
+
+            }
+
+        } else {
+            for(let y=y1;y<=y2;y++){
+                num[x1][y]=1;
+                console.log(1);
+            }
+        }
+    }
+}
