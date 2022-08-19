@@ -87,7 +87,11 @@ function getPosColor(x, y) {
     sR === max ? (r = maxC) : (sR === mid ? (r = midC) : (r = minC));
     sG === max ? (g = maxC) : (sG === mid ? (g = midC) : (g = minC));
     sB === max ? (b = maxC) : (sB === mid ? (b = midC) : (b = minC));
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
+    return {
+        r:r,
+        g:g,
+        b:b
+    }
 }
 
 
@@ -99,7 +103,8 @@ function drawPlatter() {
     for (let i = 0; i < scaleWidth; i++) {
         for (let j = 0; j < scaleHeight; j++) {
             //填充色块的颜色
-            paletteCtx.fillStyle = getPosColor(i, j);
+            var col = getPosColor(i, j);
+            paletteCtx.fillStyle = 'rgb(' + col.r + ',' + col.g + ',' + col.b + ')';
             paletteCtx.fillRect(i * xScale, j * yScale, xScale, yScale);
         }
     }
@@ -123,7 +128,8 @@ function getMousePos(e) {
 paletteCanvas.onmousedown = function (e) {
     mousePressed = true;
     const point = getMousePos(e);
-    color = getPosColor(point.x, point.y);
+    var col = getPosColor(point.x, point.y);
+    color='rgb(' + col.r + ',' + col.g + ',' + col.b + ')';
 
     //填充选中的颜色
     selectColorCtx.fillStyle = color;
@@ -135,7 +141,8 @@ paletteCanvas.onmousedown = function (e) {
 paletteCanvas.onmousemove = function (e) {
     if (mousePressed) {
         const point = getMousePos(e);
-        color = getPosColor(point.x, point.y);
+        var col = getPosColor(point.x, point.y);
+        color='rgb(' + col.r + ',' + col.g + ',' + col.b + ')';
 
         //填充选中的颜色
         selectColorCtx.fillStyle = color;
@@ -146,11 +153,16 @@ paletteCanvas.onmousemove = function (e) {
 //确定最终颜色
 paletteCanvas.onmouseup = function (e) {
     const point = getMousePos(e);
-    color = getPosColor(point.x, point.y);
+    var col = getPosColor(point.x, point.y);
+    color='rgb(' + col.r + ',' + col.g + ',' + col.b + ')';
     mousePressed = false;
 
+    colorR=col.r;
+    colorG=col.g;
+    colorB=col.b;
     //填充选中的颜色
     selectColorCtx.fillStyle = color;
+
     selectColorCtx.fillRect(0, 0, 100, 100);
 }
 
@@ -224,7 +236,7 @@ function drawPaletteBar() {
         paletteBarCtx.strokeStyle = 'rgb(' + col.r + ',' + col.g + ',' + col.b + ')';
 
         paletteBarCtx.beginPath();
-        paletteBarCtx.moveTo(x = 0, y = j);
+        paletteBarCtx.moveTo(0, j);
         paletteBarCtx.lineTo(width, j);
         paletteBarCtx.stroke();
     }

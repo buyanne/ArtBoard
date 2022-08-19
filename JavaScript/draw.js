@@ -40,9 +40,9 @@ function getPos(e) {
 //画贝塞尔曲线
 function drawLine(startPoint, controlPoint, endPoint) {
     ctx.beginPath();
-    ctx.strokeStyle=color;
-    ctx.lineCap="round";
-    ctx.lineJoin="round";
+    ctx.strokeStyle = color;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.quadraticCurveTo(controlPoint.x, controlPoint.y, endPoint.x, endPoint.y);
     ctx.closePath();
@@ -61,13 +61,53 @@ function loadImage() {
 //鼠标按下时
 function mousedown(e) {
     mousePressed = true;
-    const {x, y} = getPos(e);
-    startPoint = {x, y};
-    points.push(startPoint);
+    const point = getPos(e);
+    startPoint = point;
 
+    if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
+        points.push(startPoint);
+    }
     switch (mainArtBoardDiv.boardState) {
+        case 2: {
+            if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
+                num[point.x][point.y] = 1;
+            }
+            break;
+        }
+
+        //填充当前的封闭图形
+        case 6: {
+            if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
+                bfs(point.x, point.y);
+                const image = ctx.getImageData(0, 0, width, height);
+                //封闭区域像素点的个数
+                let len = v.length;
+
+                //替换封闭区域的颜色
+                for (let i = 0; i < len; i++) {
+                    let x = v[i].x;
+                    let y = v[i].y;
+                    //降维度
+                    let index = (y * width + x) * 4;
+                    image.data[index] = colorR;
+                    image.data[index + 1] = colorG;
+                    image.data[index + 2] = colorB;
+                    image.data[index + 3] = 255;
+                }
+
+                //画布更新
+                ctx.putImageData(image, 0, 0);
+                //清空数组和已经访问的信息
+                for (let i = 0; i < 960; i++) {
+                    vis[i] = new Array(580).fill(0);
+                }
+                v = [];
+            }
+
+            break;
+        }
         case 7: {
-            
+
             //添加橡皮擦使用前的图像
             const temp = realCtx.getImageData(0, 0, width, height);
             vet.push(temp);
@@ -85,8 +125,12 @@ function mousemove(e) {
     switch (mainArtBoardDiv.boardState) {
         //为画笔
         case 2: {
-            const {x, y} = getPos(e);
-            points.push({x, y});
+            const point = getPos(e);
+
+            points.push(point);
+
+
+            // num[point.x][point.y]=1;
 
             if (points.length > 3) {
                 const lastTwoPoints = points.slice(-2);
@@ -168,7 +212,7 @@ function mousemove(e) {
             //顺时针画一个矩形
             ctx.moveTo(startPoint.x, startPoint.y);
 
-            ctx.lineJoin="round";
+            ctx.lineJoin = "round";
 
             ctx.lineTo(endPoint.x, startPoint.y);
             ctx.lineTo(endPoint.x, endPoint.y);
@@ -180,6 +224,7 @@ function mousemove(e) {
 
             break;
         }
+
         //橡皮擦
         case 7: {
             clearArc(getPos(e));
@@ -197,8 +242,9 @@ function mouseup(e) {
     if (mouseIsInCanvas) {
         switch (mainArtBoardDiv.boardState) {
             case 2: {
-                const {x, y} = getPos(e);
-                points.push({x, y});
+                const point = getPos(e);
+                // num[point.x][point.y]=1;
+                points.push(point);
                 if (points.length > 3) {
                     const lastTwoPoints = points.slice(-2);
                     const controlPoint = lastTwoPoints[0];
@@ -207,6 +253,8 @@ function mouseup(e) {
                 }
                 saveImage();
                 pushIntoStack();
+                pushIntoNum(points);
+
                 break;
             }
             case 3: {
@@ -220,6 +268,11 @@ function mouseup(e) {
                 break;
             }
             case 5: {
+                saveImage();
+                pushIntoStack();
+                break;
+            }
+            case 6: {
                 saveImage();
                 pushIntoStack();
                 break;
