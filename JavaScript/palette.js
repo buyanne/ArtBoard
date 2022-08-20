@@ -299,6 +299,5 @@ document.onmouseup = function (e) {
 function init(){
     drawPlatter();
     drawPaletteBar();
-
 }
 init();

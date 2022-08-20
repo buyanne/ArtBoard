@@ -62,10 +62,14 @@ function loadImage() {
 
 //鼠标按下时
 function mousedown(e) {
+
+    const p=getPos(e);
+    if(p.x<0||p.x>=width||p.y<0||p.y>=height){
+        return ;
+    }
     mousePressed = true;
     const point = getPos(e);
     startPoint = point;
-
 
     if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
         points.push(startPoint);
@@ -138,11 +142,13 @@ function mousedown(e) {
             break;
         }
         case 7: {
-
+            endPoint=startPoint;
             //添加橡皮擦使用前的图像
             const temp = realCtx.getImageData(0, 0, width, height);
             vet.push(temp);
-            clearArc(startPoint, toolsDiv.rubberWidth, ctx);
+            clearArc(startPoint);
+
+            pushIntoNum();
         }
     }
 }
@@ -258,23 +264,23 @@ function mousemove(e) {
 
         //橡皮擦
         case 7: {
-            clearArc(getPos(e));
+            endPoint=getPos(e);
+            clearArc(endPoint);
+            pushIntoNum();
         }
 
     }
 }
 
-var first = true;
 
 //松开鼠标键时，画最后一个曲线
 function mouseup(e) {
-    if (first) {
-        first = false;
-        mousePressed = false;
-        startPoint = null;
-        points = [];
-        return;
+    const p=getPos(e);
+
+    if(p.x<0||p.x>=width||p.y<0||p.y>=height){
+        return ;
     }
+
     if (mousePressed === false) {
         return;
     }
@@ -331,6 +337,7 @@ function mouseup(e) {
                     ctxStack.shift();
                     ctxStack.push(temp);
                 }
+                pushIntoNum();
                 break;
             }
         }
