@@ -6,14 +6,14 @@ var ctxLineWidthDefault = 2;
 var mouseScrollChange = 0.1;
 
 //橡皮擦最大值最小值
-var rubberWidthMin = 1, rubberWidthMax = 20;
+var rubberWidthMin = 3, rubberWidthMax = 20;
 //橡皮擦默认值
 var rubberWidthDefault = 4;
 //鼠标滚动时橡皮擦变化量
 var rubberWidthChange = 0.5;
 //橡皮图片偏移量
-var eraserChange = 10;
-var eraserHeight = 20
+var eraserChange = 5;
+var eraserHeight = 10
 
 // canvas的长宽
 var height = 580;
@@ -74,6 +74,8 @@ var numStack = [];
 windowAddMouseWheel();
 widthRange.value = ctx.lineWidth * 100;
 
+
+
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
         widthRange.value = ctx.lineWidth * 100;
@@ -117,8 +119,8 @@ function windowAddMouseWheel() {
                         if (toolsDiv.rubberWidth >= rubberWidthMax) {
                             toolsDiv.rubberWidth = rubberWidthMax;
                         } else {
-                            eraserHeight += rubberWidthChange;
-                            eraserChange += rubberWidthChange / 2;
+                            eraserHeight = toolsDiv.rubberWidth*2.5;
+                            eraserChange = (toolsDiv.rubberWidth / 2)*2.5;
                             eraser.style.height = eraserHeight + "px"
                         }
                         break;
@@ -160,11 +162,12 @@ function windowAddMouseWheel() {
                         //橡皮图片
                         //防止过于小的图片
                         toolsDiv.rubberWidth -= rubberWidthChange;
+                        
                         if (toolsDiv.rubberWidth <= rubberWidthMin) {
                             toolsDiv.rubberWidth = rubberWidthMin;
                         } else {
-                            eraserHeight -= rubberWidthChange;
-                            eraserChange -= rubberWidthChange / 2;
+                            eraserHeight = toolsDiv.rubberWidth*2.5;
+                            eraserChange = (toolsDiv.rubberWidth / 2)*2.5;
                             eraser.style.height = eraserHeight + "px"
                         }
                         break;
