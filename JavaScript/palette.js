@@ -167,7 +167,7 @@ paletteCanvas.onmouseup = function (e) {
 }
 
 //初始化调色板
-drawPlatter();
+// drawPlatter();
 
 //通过纵坐标获取得到的颜色，返回一个rgb属性对象
 function getPaletteBarColor(y) {
@@ -294,4 +294,11 @@ document.onmouseup = function (e) {
 }
 
 //初始化
-drawPaletteBar();
+// drawPaletteBar();
+
+function init(){
+    drawPlatter();
+    drawPaletteBar();
+
+}
+init();
