@@ -75,7 +75,6 @@ windowAddMouseWheel();
 widthRange.value = ctx.lineWidth * 100;
 
 
-
 function windowAddMouseWheel() {
     var scrollFunc = function (e) {
         widthRange.value = ctx.lineWidth * 100;
@@ -119,8 +118,8 @@ function windowAddMouseWheel() {
                         if (toolsDiv.rubberWidth >= rubberWidthMax) {
                             toolsDiv.rubberWidth = rubberWidthMax;
                         } else {
-                            eraserHeight = toolsDiv.rubberWidth*2.5;
-                            eraserChange = (toolsDiv.rubberWidth / 2)*2.5;
+                            eraserHeight = toolsDiv.rubberWidth * 2.5;
+                            eraserChange = (toolsDiv.rubberWidth / 2) * 2.5;
                             eraser.style.height = eraserHeight + "px"
                         }
                         break;
@@ -162,12 +161,12 @@ function windowAddMouseWheel() {
                         //橡皮图片
                         //防止过于小的图片
                         toolsDiv.rubberWidth -= rubberWidthChange;
-                        
+
                         if (toolsDiv.rubberWidth <= rubberWidthMin) {
                             toolsDiv.rubberWidth = rubberWidthMin;
                         } else {
-                            eraserHeight = toolsDiv.rubberWidth*2.5;
-                            eraserChange = (toolsDiv.rubberWidth / 2)*2.5;
+                            eraserHeight = toolsDiv.rubberWidth * 2.5;
+                            eraserChange = (toolsDiv.rubberWidth / 2) * 2.5;
                             eraser.style.height = eraserHeight + "px"
                         }
                         break;
@@ -414,7 +413,7 @@ let cnt = 0;
 function fillPixel(x, y) {
     //除 2 便于遍历
     var w = ctx.lineWidth;
-    let half = Math.ceil(w / 4);
+    let half = Math.round(w / 4);
     for (let i = x - half; i <= x + half; i++) {
         for (let j = y - half; j <= y + half; j++) {
             //边界条件的判断
@@ -426,6 +425,20 @@ function fillPixel(x, y) {
             i = Math.round(i);
             j = Math.round(j);
             num[i][j] = 1;
+        }
+    }
+}
+
+//清楚圆形区域的num值
+function clearArcNum(x, y) {
+    let w = 2 * toolsDiv.rubberWidth - 1;
+
+    for (let i = x - w + 1; i <= x + w; i++) {
+        for (let j = y - w + 1; j <= y + w - 1; j++) {
+            let temp = (x - i) * (x - i) + (y - j) * (y - j);
+            if (temp < Math.pow(w / 2, 2)) {
+                num[i][j] = 0;
+            }
         }
     }
 }
@@ -554,6 +567,10 @@ function pushIntoNum() {
                 var point = getBezier(i / (bezierStep * 100), endPoint, point2, point2);
                 fillPixel(point.x, point.y);
             }
+            break;
+        }
+        case 7: {
+            clearArcNum(endPoint.x, endPoint.y);
             break;
         }
     }
