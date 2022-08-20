@@ -26,7 +26,7 @@ var eraser = document.querySelector("#eraser");
 //当前颜色
 var color = "000000";
 //保存颜色的rgb信息
-var colorR = 255, colorG = 255, colorB = 255;
+var colorR = 0, colorG = 0, colorB = 0;
 
 //粗细滑块
 var widthRange = document.querySelector("#widthRange");
@@ -62,6 +62,12 @@ for (let i = 0; i < width; i++) {
 let v = [];
 //四个方向的遍历
 var d = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+
+
+//贝塞尔曲线的采样率
+var bezierStep = 100;
+//num栈，保存标记信息，为了撤回和清空的功能
+var numStack = [];
 /*
 *  添加鼠标滚轮事件，可以调整线条的粗细
 * */
@@ -307,7 +313,10 @@ buttons[8].addEventListener("click", function () {
         const imageData = ctxStack.pop();
         realCtx.putImageData(imageData, 0, 0);
         ctx.clearRect(0, 0, width, height);
+
+        num = numStack.pop();
     }
+
 });
 
 //加入栈中
@@ -343,17 +352,6 @@ buttons[1].addEventListener("click", function () {
     }
 })
 
-var isOpen1 = false;
-var isFill = document.querySelector("#isFill");
-buttons[6].addEventListener("click", function () {
-    if (isOpen1 === false) {
-        isFill.id = "isFill1";
-        isOpen1 = true;
-    } else {
-        isFill.id = "isFill";
-        isOpen1 = false;
-    }
-})
 
 /**
  * 粗细下滑菜单相关函数
@@ -409,97 +407,152 @@ function bfs(i, j) {
 
 let cnt = 0;
 
-//根据笔的粗细来填充像素，
-function fillPixel(x, y, w) {
+//根据笔的粗细来填充像素
+function fillPixel(x, y) {
     //除 2 便于遍历
-    let half = Math.ceil(w / 2);
+    var w = ctx.lineWidth;
+    let half = Math.ceil(w / 4);
     for (let i = x - half; i <= x + half; i++) {
         for (let j = y - half; j <= y + half; j++) {
             //边界条件的判断
-
             if (i < 0 || j < 0 || i >= width || j >= height) {
                 continue;
             }
+
+            //确保为整数
+            i = Math.round(i);
+            j = Math.round(j);
             num[i][j] = 1;
         }
     }
 }
 
-function pushIntoNum() {
-    let len = points.length;
+//两点贝塞尔获得曲线上的点
+function getBezier(t, startpoint, controlpoint, endpoint) {
+    var xx = (1 - t) * (1 - t) * startpoint.x + 2 * t * (1 - t) * controlpoint.x + t * t * endpoint.x;
+    var yy = (1 - t) * (1 - t) * startpoint.y + 2 * t * (1 - t) * controlpoint.y + t * t * endpoint.y;
+
+    return {
+        x: Math.ceil(xx),
+        y: Math.ceil(yy)
+    }
+}
 
 
-    for (let i = 0; i < len - 1; i++) {
-        //第一个点
-        let x1 = points[i].x;
-        let y1 = points[i].y;
+//获得圆上的点坐标
+function getArcPath(point, r) {
+    var arr = [];
 
-        //第二个点
-        let x2 = points[i + 1].x;
-        let y2 = points[i + 1].y;
+    //遍历圆的一周
+    for (let i = 0; i < Math.PI * 2 * 1000; i++) {
+        //弧度值
+        let R = i / 1000;
+        var x = point.x + Math.floor(r * Math.cos(R));
+        var y = point.y + Math.floor(r * Math.sin(R));
 
-        let k = 0;
-        //斜率不存在
-        if (x1 === x2) {
-            //确定 y1 为小的点
-            if (y1 > y2) {
-                //交换两个点的坐标
-                let temp = y1;
-                y1 = y2;
-                y2 = temp;
-
-                temp = x1;
-                x1 = x2;
-                x2 = temp;
-            }
-            for (let y = y1; y <= y2; y++) {
-                fillPixel(x1, y, ctx.lineWidth);
-            }
-
-        } else {//斜率存在又有几种情况
-            if (x1 > x2) {
-                let temp = y1;
-                y1 = y2;
-                y2 = temp;
-
-                temp = x1;
-                x1 = x2;
-                x2 = temp;
-            }
-            //上一个点
-            let preY = y1;
-            let preX = x1;
-            //x从小到大遍历
-            for (let x = x1; x <= x2; x++) {
-                let y = k * (x - x1) + y1;
-
-                //若高度差大于1则中间有空隙要补齐
-                if (Math.abs(y - preY) > 1) {
-                    if (y < preY) {
-                        for (let j = y; j <= preY; j++) {
-                            fillPixel(x, j, ctx.lineWidth);
-                        }
-                    } else {
-                        for (let j = preY; j <= y; j++) {
-                            fillPixel(x, j, ctx.lineWidth);
-                        }
-                    }
-
-                } else {//斜率平缓没有空隙
-                    if (x - preX > 1) {
-                        for (let i = preX; i <= x; i++) {
-                            y = k * (x - i) + y1;
-                            fillPixel(i, y, ctx.lineWidth);
-                        }
-                    } else {
-                        fillPixel(x, y, ctx.lineWidth);
-                    }
-                }
-                preY = y;
-                preX = x;
-            }
-
-        }
+        arr.push({
+            x: x,
+            y: y
+        });
 
     }
+
+    return arr;
+}
+
+//将画过的点标记为1
+function pushIntoNum() {
+    switch (mainArtBoardDiv.boardState) {
+        case 2: {
+            let len = points.length;
+            //起始点
+            var startpoint = points[0];
+            //计算最后一个点之前的贝塞尔曲线值
+            for (let i = 1; i < len - 2; i++) {
+                var point1 = points[i];
+                var point2 = points[i + 1];
+
+                var endpoint = {
+                    x: (point1.x + point2.x) / 2,
+                    y: (point1.y + point2.y) / 2
+                };
+                for (let i = 1; i <= bezierStep; i++) {
+                    var point = getBezier(i / bezierStep, startpoint, point1, endpoint);
+                    fillPixel(point.x, point.y);
+                }
+                startpoint = endpoint;
+            }
+            var endpoint = points[len - 1];
+            var controlpoint = points[len - 2];
+
+            for (let i = 1; i <= bezierStep; i++) {
+                var point = getBezier(i / bezierStep, startpoint, controlpoint, endpoint);
+                fillPixel(point.x, point.y);
+            }
+            break;
+        }
+        case 3: {
+            //乘一百是为了使采样点变多一点，直线的贝塞尔只有两个控制点
+            for (let i = 1; i <= bezierStep * 100; i++) {
+                var point = getBezier(i / (bezierStep * 100), startPoint, endPoint, endPoint);
+                fillPixel(point.x, point.y);
+            }
+            break;
+        }
+        case 4: {
+            //圆心
+            var midPoint = {
+                x: (startPoint.x + endPoint.x) / 2,
+                y: (startPoint.y + endPoint.y) / 2
+            };
+
+
+            var radius = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2)
+                + Math.pow(startPoint.y - endPoint.y, 2)) / 2;
+
+
+            //获得圆上点坐标
+            var temp = getArcPath(midPoint, radius);
+
+            let len = temp.length;
+            //填充圆上点
+            for (let i = 0; i < len; i++) {
+                fillPixel(temp[i].x, temp[i].y);
+            }
+
+            break;
+        }
+        case 5: {
+            //除了终止点其余两个点
+            var point1 = {
+                x: endPoint.x,
+                y: startPoint.y
+            };
+            var point2 = {
+                x: startPoint.x,
+                y: endPoint.y
+            };
+
+            //对四条边进行标记
+            for (let i = 1; i <= bezierStep * 100; i++) {
+                var point = getBezier(i / (bezierStep * 100), startPoint, point1, point1);
+                fillPixel(point.x, point.y);
+            }
+            for (let i = 1; i <= bezierStep * 100; i++) {
+                var point = getBezier(i / (bezierStep * 100), startPoint, point2, point2);
+                fillPixel(point.x, point.y);
+            }
+
+            for (let i = 1; i <= bezierStep * 100; i++) {
+                var point = getBezier(i / (bezierStep * 100), endPoint, point1, point1);
+                fillPixel(point.x, point.y);
+            }
+            for (let i = 1; i <= bezierStep * 100; i++) {
+                var point = getBezier(i / (bezierStep * 100), endPoint, point2, point2);
+                fillPixel(point.x, point.y);
+            }
+            break;
+        }
+    }
+
 }

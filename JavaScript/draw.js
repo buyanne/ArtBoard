@@ -8,6 +8,8 @@ var mouseIsInCanvas = true;
 //以下为使用贝塞尔曲线画线的，平滑一些
 //起始点
 let startPoint = null;
+//终止点
+let endPoint = null;
 //存放一次鼠标画线的数组
 let points = [];
 
@@ -64,19 +66,48 @@ function mousedown(e) {
     const point = getPos(e);
     startPoint = point;
 
+
     if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
         points.push(startPoint);
+
+        //存储上一个状态的num数组
+        var temp = new Array(width);
+        for (let i = 0; i < width; i++) {
+            temp[i] = new Array(height);
+
+            for (let j = 0; j < height; j++) {
+                temp[i][j] = num[i][j];
+            }
+        }
+        //如果超过栈最大值
+        if (numStack.length > stackMaxSize) {
+            numStack.shift();
+        }
+        numStack.push(temp);
     }
     switch (mainArtBoardDiv.boardState) {
         case 2: {
             if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
-                num[point.x][point.y] = 1;
+                num[Math.ceil(point.x)][Math.ceil(point.y)] = 1;
             }
             break;
         }
+        case 3: {
+            numStack.push(num);
+            break;
+        }
+        case 4: {
+            numStack.push(num);
+            break;
+        }
+        case 5: {
+            numStack.push(num);
+            break;
+        }
 
-        //填充当前的封闭图形
+        //填充鼠标当前的封闭图形
         case 6: {
+
             if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
                 bfs(point.x, point.y);
                 const image = ctx.getImageData(0, 0, width, height);
@@ -233,18 +264,27 @@ function mousemove(e) {
     }
 }
 
+var first = true;
 
 //松开鼠标键时，画最后一个曲线
 function mouseup(e) {
+    if (first) {
+        first = false;
+        mousePressed = false;
+        startPoint = null;
+        points = [];
+        return;
+    }
     if (mousePressed === false) {
         return;
     }
     if (mouseIsInCanvas) {
+        endPoint = getPos(e);
         switch (mainArtBoardDiv.boardState) {
             case 2: {
-                const point = getPos(e);
+
                 // num[point.x][point.y]=1;
-                points.push(point);
+                points.push(endPoint);
                 if (points.length > 3) {
                     const lastTwoPoints = points.slice(-2);
                     const controlPoint = lastTwoPoints[0];
@@ -261,21 +301,25 @@ function mouseup(e) {
             case 3: {
                 saveImage();
                 pushIntoStack();
+                pushIntoNum();
                 break;
             }
             case 4: {
                 saveImage();
                 pushIntoStack();
+                pushIntoNum();
                 break;
             }
             case 5: {
                 saveImage();
                 pushIntoStack();
+                pushIntoNum();
                 break;
             }
             case 6: {
                 saveImage();
                 pushIntoStack();
+                // pushIntoNum();
                 break;
             }
             case 7: {
