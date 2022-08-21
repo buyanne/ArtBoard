@@ -63,9 +63,9 @@ function loadImage() {
 //鼠标按下时
 function mousedown(e) {
 
-    const p=getPos(e);
-    if(p.x<0||p.x>=width||p.y<0||p.y>=height){
-        return ;
+    const p = getPos(e);
+    if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height) {
+        return;
     }
     mousePressed = true;
     const point = getPos(e);
@@ -142,7 +142,7 @@ function mousedown(e) {
             break;
         }
         case 7: {
-            endPoint=startPoint;
+            endPoint = startPoint;
             //添加橡皮擦使用前的图像
             const temp = realCtx.getImageData(0, 0, width, height);
             vet.push(temp);
@@ -158,7 +158,10 @@ function mousemove(e) {
     if (mousePressed === false || mouseIsInCanvas === false) {
         return;
     }
-
+    const p = getPos(e);
+    if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height) {
+        return;
+    }
     switch (mainArtBoardDiv.boardState) {
         //为画笔
         case 2: {
@@ -264,7 +267,7 @@ function mousemove(e) {
 
         //橡皮擦
         case 7: {
-            endPoint=getPos(e);
+            endPoint = getPos(e);
             clearArc(endPoint);
             pushIntoNum();
         }
@@ -275,10 +278,10 @@ function mousemove(e) {
 
 //松开鼠标键时，画最后一个曲线
 function mouseup(e) {
-    const p=getPos(e);
+    const p = getPos(e);
 
-    if(p.x<0||p.x>=width||p.y<0||p.y>=height){
-        return ;
+    if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height) {
+        return;
     }
 
     if (mousePressed === false) {
