@@ -121,6 +121,11 @@ function windowAddMouseWheel() {
                             eraserHeight = toolsDiv.rubberWidth * 2.5;
                             eraserChange = (toolsDiv.rubberWidth / 2) * 2.5;
                             eraser.style.height = eraserHeight + "px"
+
+                            var pageX = e.pageX - eraserChange + 'px';
+                            var pageY = e.pageY - eraserChange + 'px';
+                            eraser.style.left = pageX;
+                            eraser.style.top = pageY;
                         }
                         break;
                     }
@@ -168,6 +173,11 @@ function windowAddMouseWheel() {
                             eraserHeight = toolsDiv.rubberWidth * 2.5;
                             eraserChange = (toolsDiv.rubberWidth / 2) * 2.5;
                             eraser.style.height = eraserHeight + "px"
+
+                            var pageX = e.pageX - eraserChange + 'px';
+                            var pageY = e.pageY - eraserChange + 'px';
+                            eraser.style.left = pageX;
+                            eraser.style.top = pageY;
                         }
                         break;
                     }
