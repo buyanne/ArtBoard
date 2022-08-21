@@ -198,7 +198,7 @@ function windowAddMouseWheel() {
 /*
 状态获取函数，通过网页上按钮的单击，判断当前的状态
 一部分按下即使用的功能就不列状态了
-状态列表：0 color，1 size，2 pencil，3 line,4 circle,5square,6 area, 7 rubber
+状态列表：0 文字，1 size，2 pencil，3 line,4 circle,5square,6 area, 7 rubber
 默认状态：2（笔）
  */
 var buttons = document.querySelectorAll(".ToolsDiv input");
@@ -207,11 +207,14 @@ var mainArtBoardDiv = document.querySelector(".MainArtBoardDiv");
 mainArtBoardDiv.boardState = 2;
 buttons[2].className = "after";
 
+//添加文字功能
+
 
 //绑定事件
-for (let i = 2; i <= 7; i++) {
-
-
+for (let i = 0; i <= 7; i++) {
+    if(i===1){
+        continue;
+    }
     buttons[i].addEventListener("click", function changeState() {
         //点击事件
         //改变当前网页的state
@@ -234,6 +237,7 @@ for (let i = 2; i <= 7; i++) {
         }
     });
 }
+
 
 //下载图片
 function downLoadImage() {
@@ -593,5 +597,6 @@ function pushIntoNum() {
             break;
         }
     }
-
 }
+
+

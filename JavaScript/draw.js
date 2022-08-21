@@ -90,6 +90,15 @@ function mousedown(e) {
         numStack.push(temp);
     }
     switch (mainArtBoardDiv.boardState) {
+        //文字功能
+        case 0:{
+            var text=document.createElement("input");
+            text.type="text";
+            text.value="nihao";
+
+            break;
+        }
+
         case 2: {
             if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height) {
                 num[Math.ceil(point.x)][Math.ceil(point.y)] = 1;
