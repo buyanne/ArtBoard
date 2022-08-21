@@ -280,7 +280,10 @@ function clearArc(p) {
         let x = p.x - width;
         let y = p.y - height;
         if (step <= r) {
+
             realCtx.clearRect(x, y, width * 2, height * 2);
+
+
             step += 0.1;
             func(r);
         }
@@ -444,8 +447,14 @@ function clearArcNum(x, y) {
     let w = 2 * toolsDiv.rubberWidth - 1;
 
     for (let i = x - w + 1; i <= x + w; i++) {
+        if (i < 0 || i >= width)
+            continue;
         for (let j = y - w + 1; j <= y + w - 1; j++) {
+            if (j < 0 || j >= height) {
+                continue;
+            }
             let temp = (x - i) * (x - i) + (y - j) * (y - j);
+
             if (temp < Math.pow(w / 2, 2)) {
                 num[i][j] = 0;
             }
