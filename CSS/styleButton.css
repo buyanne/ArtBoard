@@ -27,6 +27,10 @@
 
 }
 
+#word{
+    left: 50px;
+}
+
 #color {
     display: none;
 }

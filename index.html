@@ -22,10 +22,10 @@
             <img src="Resource/Image/circle.png" id="eraser" alt="橡皮擦">
             <!--下拉菜单-->
             <div id="widthChange">
-            <div>
-                <input type = "range" min="100" max="1000" id ="widthRange" >
-            </div>
-            
+                <div>
+                    <label for="widthRange"></label><input type="range" min="100" max="1000" id="widthRange">
+                </div>
+
             </div>
             <div id="isFill">
 
@@ -33,7 +33,7 @@
             </div>
             <!--        工具栏-->
             <div class="ToolsDiv">
-                <input type="image" src="Resource/Image/color.png" id="color" alt="颜色" class="before"/>
+                <input type="image" src="Resource/Image/handwriting.png" id="word" alt="文字功能" class="before">
                 <input type="image" src="Resource/Image/size.png" id="size" alt="粗细" class="before"/>
                 <input type="image" src="Resource/Image/pencil.png" id="pencil" alt="画笔" class="before"/>
                 <input type="image" src="Resource/Image/line.png" id="line" alt="直线段" class="before"/>
@@ -46,6 +46,8 @@
                        class="before"/>
                 <input type="image" src="Resource/Image/save.png" id="save" alt="保存图片" onclick="downLoadImage()"
                        class="before"/>
+
+
             </div>
 
             <div class="CanvasDiv">
@@ -57,15 +59,15 @@
         <div class="Colors">
             <div id="bkColor"></div>
             <div class="paletteDiv">
-<!--                调色盘-->
+                <!--                调色盘-->
                 <canvas id="palette"></canvas>
             </div>
             <div class="paletteBarDiv">
-<!--                彩虹条-->
+                <!--                彩虹条-->
                 <canvas id="paletteBar"></canvas>
             </div>
 
-<!--            显示选中的颜色-->
+            <!--            显示选中的颜色-->
             <div class="selectedColorDiv">
                 <span id="selectedColorText"><strong>颜色:</strong></span>
                 <canvas id="selectedColor"></canvas>
