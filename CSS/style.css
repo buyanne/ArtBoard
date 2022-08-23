@@ -192,3 +192,52 @@ body{
     border-radius: 25px;
     backdrop-filter: blur(6px);
 }
+
+#textInsert1{
+    background-color: rgb(255, 255, 255,0);
+    position:fixed;
+    z-index: 3;
+    max-width: 400px;
+}
+
+#textInsert{
+    position:fixed;
+    visibility: hidden;
+}
+
+#textRange1{
+    
+    position:absolute;
+    top:43px;
+    left:30px;
+}
+#textRange{
+    
+    visibility:hidden;
+    height: auto;
+}
+
+#textChange{
+    visibility:hidden;
+    background-color: rgb(255, 255, 255,0);
+    transition: all 0.2s;
+    border-radius: 50px;
+    height: 100px;
+    width: 200px;
+    position:absolute;
+    top:-120px;
+    left:-113px;
+}
+
+#textChange1{
+    transition:all 0.2s ease ;
+    
+    border-radius: 50px;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.7);
+    height: 100px;
+    width: 200px;
+    position:absolute;
+    top:-25px;
+    left:-113px;
+}

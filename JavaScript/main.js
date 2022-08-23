@@ -68,6 +68,11 @@ var d = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 var bezierStep = 100;
 //num栈，保存标记信息，为了撤回和清空的功能
 var numStack = [];
+
+//文字功能相关
+var textChange = document.querySelector("#textChange");
+var textRange = document.querySelector("#textRange");
+
 /*
 *  添加鼠标滚轮事件，可以调整线条的粗细
 * */
@@ -226,6 +231,15 @@ for (let i = 0; i <= 7; i++) {
             canvas.id = "Canvas_chosen";
         } else {
             canvas.id = "Canvas";
+        }
+
+        if(mainArtBoardDiv.boardState !== 0){
+            textInsert.id = "textInsert";
+            textChange.id = "textChange"
+            textRange.id = "textRange"
+        }else {
+            textChange.id = "textChange1"
+            textRange.id = "textRange1"
         }
 
         //改变css样式
@@ -600,3 +614,41 @@ function pushIntoNum() {
 }
 
 
+
+
+//文字框追踪鼠标
+var textfont = 16;
+var textInsert = document.querySelector("#textInsert");
+textRange.value=160;
+
+textRange.addEventListener("input",function(){
+    textfont = textRange.value/10;
+})
+var vertX;
+var vertY;
+
+canvas.addEventListener("mouseup",function(e){
+    if(mainArtBoardDiv.boardState===0){
+        textInsert.value = "";
+        textInsert.id = "textInsert1";
+        vertX = e.pageX - eraserChange;
+        vertY = e.pageY - eraserChange;
+        textInsert.style.left = vertX;
+        textInsert.style.top = vertY;
+        textInsert.style.height = textfont*1.25;
+        textInsert.style.fontSize=textfont;
+        
+    }
+})
+
+textInsert.addEventListener("keyup",function(e){
+    e = e || window.e;
+    var keyN = e.keyCode;
+    if(keyN === 13){
+        ctx.font =  textfont+"px Arial";
+        ctx.fillStyle = color;
+        var y = vertY-150+textfont*0.99;
+        ctx.fillText(textInsert.value,vertX-400,y);
+        textInsert.id = "textInsert";
+    }
+})
