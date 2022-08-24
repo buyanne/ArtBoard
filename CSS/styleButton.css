@@ -2,7 +2,7 @@
     position: absolute;
     height: 50px;
     border-radius: 20px;
-    background-color: #9b44be6e;
+    background-color: rgba(255,15,35,0.27);
     top: 25px;
     /*平滑动画*/
     transition: all 0.2s;
@@ -13,15 +13,15 @@
     height: 50px;
     border-radius: 20px;
     background-color: rgba(236,0,58,0.38);
-    transform: scale(1.65);
+    transform: scale(1.45);
     top: 25px;
     /*平滑动画*/
-    transition: all 0.2s ease ;
+    transition: all 0.3s ease ;
 }
 
 .ToolsDiv .before:hover {
     background-color: rgba(190, 45, 109, 0.21);
-    transform: scale(1.4);
+    transform: scale(1.3);
     /*放大1 .5 倍*/
     transition: all 0.2s ease;
 

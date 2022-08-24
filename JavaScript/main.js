@@ -650,5 +650,7 @@ textInsert.addEventListener("keyup",function(e){
         var y = vertY-150+textfont*0.99;
         ctx.fillText(textInsert.value,vertX-400,y);
         textInsert.id = "textInsert";
+        pushIntoStack();
+        saveImage();
     }
 })
