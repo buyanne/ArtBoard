@@ -1,20 +1,22 @@
-body{
-    background:url("../Resource/Image/bkg.png");
-    
+body {
+    background: url("../Resource/Image/bkg.png");
+
 }
+
 * {
     margin: 0;
     padding: 0;
 }
 
-*:focus{
+*:focus {
     outline: none;
 }
+
 /*
     全局为一个指针
 */
-body{
-    cursor: url("../Resource/Image/cursor.gif") 1 1,crosshair;
+* {
+    cursor: url("../Resource/Image/cursor.gif") 1 1, crosshair;
 }
 
 .MainArtBoardDiv {
@@ -26,7 +28,7 @@ body{
 .ToolsDiv {
     backdrop-filter: blur(6px);
     position: absolute;
-    background-color: rgba(53, 190, 130, 0.15);
+    background-color: rgba(136, 255, 110, 0.27);
     height: 100px;
     width: 1150px;
     top: -125px;
@@ -58,14 +60,14 @@ body{
     cursor: url("../Resource/Image/cursor.gif") 1 1, crosshair;
 }
 
-#RealCanvas{
+#RealCanvas {
     position: absolute;
     z-index: 0;
     left: 0;
     top: 0;
 }
 
-#Canvas_chosen{
+#Canvas_chosen {
     position: absolute;
     z-index: 1;
     left: 0;
@@ -73,43 +75,43 @@ body{
     cursor: none;
 }
 
-#eraser{
-    display:none;
+#eraser {
+    display: none;
 }
 
-#eraser_chosen{
+#eraser_chosen {
     position: fixed;
     height: 10px;
-	left: 0;
-	top: 0;
+    left: 0;
+    top: 0;
     z-index: 1;
     pointer-events: none;
 }
-#widthChange{
-    visibility:hidden;
-    background-color: rgb(255, 255, 255,0);
+
+#widthChange {
+    visibility: hidden;
+    background-color: rgb(255, 255, 255, 0);
     transition: all 0.2s;
     border-radius: 50px;
     height: 100px;
     width: 200px;
-    position:absolute;
-    top:-120px;
-    left:-15px;
+    position: absolute;
+    top: -120px;
+    left: -15px;
 }
 
-#widthChange1{
-    transition:all 0.2s ease ;
-    
+#widthChange1 {
+    transition: all 0.2s ease;
+
     border-radius: 50px;
     z-index: 3;
     background-color: rgba(255, 255, 255, 0.7);
     height: 100px;
     width: 200px;
-    position:absolute;
-    top:-25px;
-    left:-15px;
+    position: absolute;
+    top: -25px;
+    left: -15px;
 }
-
 
 
 /*#isFill{
@@ -138,43 +140,44 @@ body{
     backdrop-filter: blur(6px);
 }*/
 
-#widthRange1{
-    
-    position:absolute;
-    top:43px;
-    left:30px;
+#widthRange1 {
+
+    position: absolute;
+    top: 43px;
+    left: 30px;
 }
-#widthRange{
-    
-    visibility:hidden;
+
+#widthRange {
+
+    visibility: hidden;
     height: auto;
 }
 
-#palette{
+#palette {
     position: absolute;
     left: 50px;
     top: 200px;
     height: 256px;
-    width:256px;
+    width: 256px;
 }
 
 
-#paletteBar{
+#paletteBar {
     position: absolute;
     left: 330px;
-    top:200px;
+    top: 200px;
     height: 256px;
     width: 30px;
-    
+
 }
 
-#selectedColorText{
+#selectedColorText {
     position: absolute;
     left: 75px;
     top: 520px;
 }
 
-#selectedColor{
+#selectedColor {
     position: absolute;
     left: 150px;
     top: 485px;
@@ -182,62 +185,63 @@ body{
     height: 100px;
 }
 
-#bkColor{
+#bkColor {
     background-color: rgba(255, 255, 255, 0.3);
     position: absolute;
-    left:30px;
-    top:185px;
+    left: 30px;
+    top: 185px;
     width: 350px;
     height: 425px;
     border-radius: 25px;
     backdrop-filter: blur(6px);
 }
 
-#textInsert1{
-    background-color: rgb(255, 255, 255,0);
-    position:fixed;
+#textInsert1 {
+    background-color: rgb(255, 255, 255, 0);
+    position: fixed;
     z-index: 3;
     max-width: 400px;
 }
 
-#textInsert{
-    position:fixed;
+#textInsert {
+    position: fixed;
     visibility: hidden;
 }
 
-#textRange1{
-    
-    position:absolute;
-    top:43px;
-    left:30px;
+#textRange1 {
+
+    position: absolute;
+    top: 43px;
+    left: 30px;
 }
-#textRange{
-    
-    visibility:hidden;
+
+#textRange {
+
+    visibility: hidden;
     height: auto;
 }
 
-#textChange{
-    visibility:hidden;
-    background-color: rgb(255, 255, 255,0);
+#textChange {
+    visibility: hidden;
+    background-color: rgb(255, 255, 255, 0);
     transition: all 0.2s;
     border-radius: 50px;
     height: 100px;
     width: 200px;
-    position:absolute;
-    top:-120px;
-    left:-113px;
+    position: absolute;
+    top: -120px;
+    left: -113px;
 }
 
-#textChange1{
-    transition:all 0.2s ease ;
-    
+#textChange1 {
+    transition: all 0.2s ease;
+
     border-radius: 50px;
     z-index: 3;
     background-color: rgba(255, 255, 255, 0.7);
     height: 100px;
     width: 200px;
-    position:absolute;
-    top:-25px;
-    left:-113px;
+    position: absolute;
+    top: -25px;
+    left: -113px;
 }
