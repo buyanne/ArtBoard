@@ -12,6 +12,8 @@
 - 橡皮擦和填充色块
 - 保存图片
 
+点击链接进入测试网站 [ArtBoard](https://buyanne.github.io/ArtBoard/)
+
 ## 目录
 
 - [上手指南](#上手指南)
@@ -84,9 +86,6 @@ Artboard
 │  ├── save.png
 │  ├── size.png
 │  └── square.png
-
-
-
 ```
 ---
 ### 使用到的框架
