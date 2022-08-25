@@ -27,6 +27,7 @@
 - [版权说明](#版权说明)
 - [鸣谢](#鸣谢)
 
+---
 ### 上手指南
 
 ###### 开发前的配置要求
@@ -41,11 +42,11 @@
 ```sh
 git clone https://github.com/buyanne/ArtBoard.git
 ```
-
+---
 ### Demo
 
 ![img.png](Resource/Image/img.png)
-
+---
 ### 文件目录说明
 
 ```
@@ -87,11 +88,11 @@ Artboard
 
 
 ```
-
+---
 ### 使用到的框架
 
 - 使用原生JavaScript,HTML，Css 完成
-
+---
 ### 如何参与开源项目
 
 贡献使开源社区成为一个学习、激励和创造的绝佳场所。你所作的任何贡献都是**非常感谢**的。
@@ -102,24 +103,29 @@ Artboard
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+---
 ### 版本控制
 
 该项目使用Git进行版本管理。
 
+---
 ### 作者
 
 Buyanne && Wuduhuange
 
 *您也可以在贡献者名单中查看所有参与该项目的开发者。*
 
+---
 ### 贡献者
 - Buyanne
 - Wuduhuange
 
+---
 ### 版权说明
 
 该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/buyanne/ArtBoard/blob/main/LICENSE)
 
+---
 ### 鸣谢
 
 - 感谢所有使用或参与本项目的人
