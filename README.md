@@ -116,8 +116,8 @@ Buyanne && Wuduhuange
 
 ---
 ### 贡献者
-- Buyanne
-- Wuduhuange
+- [buyanne](https://github.com/buyanne)
+- [WuDuHuange](https://github.com/wuduhuange)
 
 ---
 ### 版权说明
