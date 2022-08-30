@@ -298,10 +298,7 @@ function clearArc(p) {
         let x = p.x - width;
         let y = p.y - height;
         if (step <= r) {
-
             realCtx.clearRect(x, y, width * 2, height * 2);
-
-
             step += 0.1;
             func(r);
         }
@@ -337,11 +334,8 @@ function saveImage() {
 
 }
 
-buttons[8].addEventListener("click", function () {
-    // if (isFirst) {
-    //     ctxStack.pop();
-    //     isFirst = false;
-    // }
+//撤销功能
+function cancel(){
     if (ctxStack.length > 0) {
         const imageData = ctxStack.pop();
         realCtx.putImageData(imageData, 0, 0);
@@ -349,6 +343,14 @@ buttons[8].addEventListener("click", function () {
 
         num = numStack.pop();
     }
+}
+
+buttons[8].addEventListener("click", function () {
+    // if (isFirst) {
+    //     ctxStack.pop();
+    //     isFirst = false;
+    // }
+    cancel();
 
 });
 
@@ -652,5 +654,36 @@ textInsert.addEventListener("keyup",function(e){
         textInsert.id = "textInsert";
         pushIntoStack();
         saveImage();
+    }
+})
+
+//判断ctrl是否按下
+var isenter=false;
+
+document.addEventListener("keydown",function (e){
+    e=e||window.e;
+    var keyN=e.keyCode;
+
+    if(keyN===17){
+        isenter=true;
+        // console.log('niho');
+    }
+});
+
+document.addEventListener('keyup',function (e){
+    e=e||window.e;
+    var keyN=e.keyCode;
+    if(keyN===17){
+        isenter=false;
+    }
+})
+
+document.addEventListener("keydown",function (e){
+    e = e || window.e;
+    var keyN = e.keyCode;
+    if(keyN===90){
+        if(isenter){
+            cancel();
+        }
     }
 })
